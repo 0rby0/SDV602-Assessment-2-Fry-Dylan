@@ -15,17 +15,29 @@ class SessionUserManager:
  
 	def find_link(self, username, session_name):
 		"""Finds the account with the given name which us attached to the given session in the remote database."""
-		return self.get_collection(db_config.SESSION_USER_COLLECTION).find_one({"username": username, "session": session_name})
+		pulled_link = self.get_collection(db_config.SESSION_USER_COLLECTION).find_one({"username": username, "session": session_name})
+
+		parsed_link = [link for link in pulled_link]
+
+		return parsed_link
 
 	
 	def find_link_by_username(self, username):
 		"""Finds all links for the given username."""
-		return self.get_collection(db_config.SESSION_USER_COLLECTION).find({"username": username})
+		pulled_link = self.get_collection(db_config.SESSION_USER_COLLECTION).find({"username": username})
+
+		parsed_link = [link for link in pulled_link]
+
+		return parsed_link
 
 
 	def find_link_by_session(self, session_name):
 		"""Finds all links for the given session name."""
-		return self.get_collection(db_config.SESSION_USER_COLLECTION).find({"session": session_name})
+		pulled_link = self.get_collection(db_config.SESSION_USER_COLLECTION).find({"session": session_name})
+		
+		parsed_link = [link for link in pulled_link]
+
+		return parsed_link
 
 
 	def create_link(self, username, session):

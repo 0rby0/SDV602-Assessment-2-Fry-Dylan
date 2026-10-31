@@ -81,6 +81,11 @@ class SessionManager:
 				if session["creator"] != user.username:
 					return "User is not creator of session"
 
+				print(self.link.find_link_by_session(session_name))
+
+				if self.link.find_link_by_session(session_name):
+					return "Cannot delete session, session in use"
+
 				self.db.wipe_data(session)
 				return f"Session '{session["session"]}' removed from database"
  

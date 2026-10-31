@@ -1,6 +1,7 @@
-> Checklist of things I know are left before front-end implementation:
+> Commit: Blocking session deletion when in use
 >
-> - Disallowing session deletion if there are still users in the session
+> - The session manager now checks if the find link by session function returns a value before deleting the session
+> - Changed the find by functions to return data rather than a cursor
 
 > Commit: Tracking user sessions
 >
