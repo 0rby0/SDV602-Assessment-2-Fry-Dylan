@@ -1,3 +1,8 @@
+> Commit: GUI menus
+> 
+> - Created python files for each menu
+> - Implemented each menus GUI elements
+
 > Commit: Blocking session deletion when in use
 >
 > - The session manager now checks if the find link by session function returns a value before deleting the session
