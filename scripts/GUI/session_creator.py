@@ -1,14 +1,11 @@
 import FreeSimpleGUI as sg
 
-class DESConfig:
+class SessionCreator:
     def show(self):
         layout = [
-                        [sg.Text("Type"), sg.Combo(["Line", "Pie", "Bar"])],
-                        [sg.Text("Y Key"), sg.Combo(["None"])],
-                        [sg.Text("X Key"), sg.Combo(["None"])],
-                        [sg.Text("Legend"), sg.Combo(["None"])],
-                        [sg.Text("Legend Series"), sg.Combo(["None"])],
-                        [sg.Button("Cancel"), sg.Button("Submit")]
+                        [ sg.Text("Create Session") ],
+                        [ sg.Text("Session Name"), sg.Input(key = "-SESSIONNAME-") ],
+                        [ sg.Button(button_text = "Cancel", key = "-CANCEL-"), sg.Checkbox(text = "Public", key = "-PUBLICTOGGLE-"), sg.Button(button_text = "Create", key = "-SUBMIT-") ]
                     ]
 
         window = sg.Window("DES Analysis App", layout = layout)

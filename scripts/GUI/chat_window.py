@@ -1,19 +1,12 @@
 import FreeSimpleGUI as sg
 
-class LogIn:
+class ChatWindow:
     def show(self):
-        title = [[sg.Text("DES Analysis App")]]
-
-        input = [
-                        [sg.Text("Login")],
-                        [sg.Text("Username"), sg.Input()],
-                        [sg.Text("Password"), sg.Input()],
-                        [sg.Button("Submit")],
-                        [sg.Button("Don't have an account? Sign Up")]
-                    ]
-
         layout = [
-                        [sg.Column(title), sg.Column(input)]
+                        [ sg.Text("Session Name", size = (40, 1), justification = "center", key = "-SESSIONNAME-") ],
+                        [ sg.HorizontalSeparator() ],
+                        [ sg.Multiline(size = (47, 25), disabled = True, key = "-CHATLOG-") ],
+                        [ sg.Input(key = "-MESSAGEINPUT-"), sg.Button(">", key = "-SUBMIT-") ]
                     ]
 
         window = sg.Window("DES Analysis App", layout = layout)

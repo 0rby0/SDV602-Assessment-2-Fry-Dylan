@@ -1,7 +1,12 @@
+> Commit: GUI keys
+>
+> - Added keys to each GUI element so that it can be accessed later
+
 > Commit: GUI menus
-> 
+>
 > - Created python files for each menu
 > - Implemented each menus GUI elements
+> - app.py now opens the login GUI if remote or the DES viewer if local
 
 > Commit: Blocking session deletion when in use
 >

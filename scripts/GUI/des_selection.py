@@ -3,19 +3,19 @@ import FreeSimpleGUI as sg
 class DESSelection:
     def show(self):
         controls_layout = [
-                                    [sg.Button("Sign Out")],
-                                    [sg.Button("Create")],
-                                    [sg.Button("Delete")],
-                                    [sg.Button("Select")]
+                                    [ sg.Button(button_text = "Sign Out") ],
+                                    [ sg.Button(button_text = "Create") ],
+                                    [ sg.Button(button_text = "Delete") ],
+                                    [ sg.Button(button_text = "Select") ]
                                   ]
 
         search_layout = [
-                        [sg.Text("Username"), sg.Text()],
-                        [sg.Table([["None"]])]
+                        [ sg.Text("Username", key = "-USERNAME-"), sg.Input(key = "-SEARCH-") ],
+                        [ sg.Table(values = [["None"]], key = "-SESSIONS-") ]
                     ]
 
         layout = [
-                        [sg.Column(search_layout), sg.Column(controls_layout)]
+                        [ sg.Column(search_layout), sg.Column(controls_layout) ]
                     ]
 
         window = sg.Window("DES Analysis App", layout = layout)

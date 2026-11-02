@@ -4,6 +4,8 @@ from session_manager import SessionManager
 from data_displayer import DataDisplay
 from user import User
 from headless import HeadlessTest
+from GUI.log_in import LogIn
+from GUI.des_window import DESWindow
 import argparse
 
 class App:
@@ -22,6 +24,11 @@ class App:
 	
 		if verbosity >= 0:
 			HeadlessTest(self, verbosity = verbosity)
+		else:
+			if REMOTE:
+				LogIn().show()
+			else:
+				DESWindow().show()
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
