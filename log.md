@@ -1,3 +1,11 @@
+> Commit: Sign up menu functionality
+>
+> - The sign up menu now lets the user go to the log in form or create a new user
+> - The log in and sign up screens cannot reference each other since that causes circular importing
+> - To solve this the log in and sign up menus are going to get merged and use a toggle to determine the correct menu to display
+> - The login screen is now created with the init function and stores the app and current screen permanently
+> - The login screen also has a dedicated update function which calls when the toggle button is clicked
+
 > Commit: Login menu functionality
 >
 > - The login menu now has the ability to go to the sign up form or try to log in as a user

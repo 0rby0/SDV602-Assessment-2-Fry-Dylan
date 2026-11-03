@@ -26,7 +26,7 @@ class App:
 			HeadlessTest(self, verbosity = verbosity)
 		else:
 			if REMOTE:
-				LogIn().show(self)
+				LogIn(self)
 			else:
 				DESWindow().show(self)
 
