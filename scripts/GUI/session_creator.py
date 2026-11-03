@@ -1,12 +1,13 @@
 import FreeSimpleGUI as sg
 
 class SessionCreator:
-	def __init__(self, app):
+	def __init__(self, app, des_selection_window):
 		# Create the window
 		self.window = self.create_window()
 
-		# Create a permanent reference to the app
+		# Create a permanent reference to the app and DES selection window
 		self.app = app
+		self.des_selection_window = des_selection_window
 
 		# Show the window
 		self.show()
@@ -33,4 +34,12 @@ class SessionCreator:
 					case _:
 						pass
 
+		self.close_window()
+
+
+	def close_window(self):
+		if self.des_selection_window:
+			self.des_selection_window.close_window()
+
 		self.window.close()
+		

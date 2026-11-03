@@ -1,3 +1,15 @@
+> Commit: Window reference chains
+>
+> - The login/signup screen will be referenced by the DES selection screen
+> - The DES selection screen will be referenced by the session creation screen
+> - The DES selection screen will store its references to the DES viewing windows
+> - Each DES viewing window will create and hold a reference to its own chat window
+> - The DES viewing window will hold a reference to the DES config window
+> - The data source manager screen will hold a reference to the DES viewing window
+> - Each window will have a function for closing the window
+> - This function will reccursively call the close function on any referenced windows
+> - In theory this should allow closing one main window to completely close the application
+
 > Commit: DES selection window functionality
 >
 > - The DES selection window should now update to show the sessions which are returned by the search session function

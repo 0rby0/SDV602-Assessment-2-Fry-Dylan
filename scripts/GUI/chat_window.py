@@ -35,4 +35,8 @@ class ChatWindow:
 					case _:
 						break
 
+		self.close_window()
+
+
+	def close_window(self):
 		self.window.close()

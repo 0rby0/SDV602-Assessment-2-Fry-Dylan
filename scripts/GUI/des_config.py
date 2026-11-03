@@ -36,4 +36,8 @@ class DESConfig:
 					case _:
 						pass
 
+		self.close_window()
+
+
+	def close_window(self):
 		self.window.close()

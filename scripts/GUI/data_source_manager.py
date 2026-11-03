@@ -1,12 +1,13 @@
 import FreeSimpleGUI as sg
 
 class DataSourceManager:
-	def __init__(self, app):
+	def __init__(self, app, des_window):
 		# Create the window
 		self.window = self.create_window()
 
-		# Create a permanent reference to the app
+		# Create a permanent reference to the app and DES window
 		self.app = app
+		self.des_window = des_window
 
 		# Show the window
 		self.show()
@@ -40,10 +41,16 @@ class DataSourceManager:
 
 			match event:
 					case sg.WINDOW_CLOSED:
-						running = False
 						break
 
 					case _:
 						break
+
+		self.close_window()
+
+
+	def close_window(self):
+		if self.des_window:
+			self.des_window.close_window()
 
 		self.window.close()

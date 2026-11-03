@@ -7,6 +7,7 @@ class DESWindow:
 
 		# Create a permanent reference to the app
 		self.app = app
+		self.children = []
 
 		# Show the window
 		self.show()
@@ -43,5 +44,12 @@ class DESWindow:
 
 					case _:
 						pass
+
+		self.close_window()
+
+
+	def close_window(self):
+		for child in self.children:
+			child.close_window()
 
 		self.window.close()

@@ -6,6 +6,8 @@ class DESSelection:
 	def __init__(self, app, login_window):
 		# Create the window
 		self.window = self.create_window()
+
+		# Create a reference to the login window
 		self.login_window = login_window
 
 		# Create a permanent reference to the app and update switch
@@ -25,54 +27,51 @@ class DESSelection:
 											]
 
 		search_layout = [
-								[ sg.Text("Username", key = "-USERNAME-"), sg.Push(), sg.Input(key = "-SEARCH-") ],
-								[ sg.Table(values = [["None"]], auto_size_columns = False, col_widths = [50], num_rows = 10, justification = "left", headings = ["Public Sessions"], key = "-SESSIONS-") ]
-						]
+											[ sg.Text("Username", key = "-USERNAME-"), sg.Push(), sg.Input(key = "-SEARCH-") ],
+											[ sg.Table(values = [["None"]], auto_size_columns = False, col_widths = [50], num_rows = 10, justification = "left", headings = ["Public Sessions"], key = "-SESSIONS-") ]
+										]
 
-		layout = [
-								[ sg.Column(search_layout), sg.Column(controls_layout) ]
-						]
+		layout = [[ sg.Column(search_layout), sg.Column(controls_layout) ]]
 
 		return sg.Window("DES Analysis App", layout = layout, finalize = True)
    
    
 	def show(self):
 		while True:
-				event, values = self.window.read(10)
-    
-				if values:
-					self.update_display(search_input = values["-SEARCH-"], current_selection = values["-SESSIONS-"])
+			event, values = self.window.read(10)
+	
+			if values:
+				self.update_display(search_input = values["-SEARCH-"], current_selection = values["-SESSIONS-"])
 
-				match event:
-					case "-SIGNOUT-":
-						# Redisplay the login window
-						self.login_window.un_hide()
-						# Close this window
-						break
-   
-					case "-CREATE-":
-						self.window.hide()
-						SessionCreator(self.app)
-						break
-   
-					case "-DELETE-":
-						pass
-   
-					case "-SELECT-":
-						self.window.hide()
-						DESWindow(self.app)
-						break
-       
-					case sg.WINDOW_CLOSED:
-						if not self.is_updating:
-							# Close the login and session selection window
-							self.login_window.close()
-							break
+			match event:
+				case "-SIGNOUT-":
+					# Redisplay the login window
+					self.login_window.un_hide()
+					# Close this window
+					break
 
-					case _:
-						pass
+				case "-CREATE-":
+					self.window.hide()
+					SessionCreator(app = self.app, des_selection_window = self)
+					break
 
-		self.window.close()
+				case "-DELETE-":
+					pass
+
+				case "-SELECT-":
+					self.window.hide()
+					DESWindow(app = self.app)
+					break
+		
+				case sg.WINDOW_CLOSED:
+					if not self.is_updating:
+						break
+
+				case _:
+					pass
+
+		self.close_window()
+
 
 	def update_display(self, search_input, current_selection):
 		# Lock the application from closing during an update
@@ -94,3 +93,10 @@ class DESSelection:
 			self.window["-USERNAME-"].update(value = self.app.user.username)
 
 		self.is_updating = False
+
+
+	def close_window(self):
+		if self.login_window:
+			self.login_window.close_window()
+
+		self.window.close()

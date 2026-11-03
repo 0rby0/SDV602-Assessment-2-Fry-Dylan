@@ -46,11 +46,11 @@ class LogIn:
 								# Hide this window
 								self.window.hide()
      							# If they have successfully logged in, open the session manager
-								DESSelection(self.app, self.window)
+								DESSelection(app = self.app, login_window = self)
 
 						else:
 							if self.app.user.register_user(username = values["-USERNAME-"], password = values["-PASSWORD-"]) == "User created successfully":
-								# If it is successfull, open the DES selection window
+								# If it is successfull, return to the login screen
 								self.showing_login_screen = not self.showing_login_screen
 								self.update_window()
 					
@@ -66,7 +66,7 @@ class LogIn:
 						# If there is no input then do nothing
 						pass
 
-			self.window.close()
+			self.close_window()
 
 
 	def update_window(self):
@@ -77,3 +77,6 @@ class LogIn:
 		else:
 			self.window["-HEADING-"].update(value = "Sign Up")
 			self.window["-TOGGLE-"].update(text = "Already have an account? Log In")
+
+	def close_window(self):
+		self.window.close()
