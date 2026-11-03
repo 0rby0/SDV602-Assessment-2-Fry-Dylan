@@ -26,9 +26,9 @@ class App:
 			HeadlessTest(self, verbosity = verbosity)
 		else:
 			if REMOTE:
-				LogIn().show()
+				LogIn().show(self)
 			else:
-				DESWindow().show()
+				DESWindow().show(self)
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()

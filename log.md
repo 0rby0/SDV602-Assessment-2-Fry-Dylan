@@ -1,12 +1,17 @@
+> Commit: Login menu functionality
+>
+> - The login menu now has the ability to go to the sign up form or try to log in as a user
+> - All of the GUI windows will need to take an app when they are shown
+
 > Commit: GUI keys
 >
 > - Added keys to each GUI element so that it can be accessed later
+> - app.py now opens the login GUI if remote or the DES viewer if local
 
 > Commit: GUI menus
 >
 > - Created python files for each menu
 > - Implemented each menus GUI elements
-> - app.py now opens the login GUI if remote or the DES viewer if local
 
 > Commit: Blocking session deletion when in use
 >

@@ -1,7 +1,7 @@
 import FreeSimpleGUI as sg
 
 class SessionCreator:
-    def show(self):
+    def show(self, app):
         layout = [
                         [ sg.Text("Create Session") ],
                         [ sg.Text("Session Name"), sg.Input(key = "-SESSIONNAME-") ],

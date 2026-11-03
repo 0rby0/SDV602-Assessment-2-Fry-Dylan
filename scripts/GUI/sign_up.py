@@ -1,7 +1,7 @@
 import FreeSimpleGUI as sg
 
-class SignIn:
-    def show(self):
+class SignUp:
+    def show(self, app):
         title = [[ sg.Text("DES Analysis App") ]]
 
         input_layout = [

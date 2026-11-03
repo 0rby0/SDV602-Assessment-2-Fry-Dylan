@@ -1,7 +1,7 @@
 import FreeSimpleGUI as sg
 
 class ChatWindow:
-    def show(self):
+    def show(self, app):
         layout = [
                         [ sg.Text("Session Name", size = (40, 1), justification = "center", key = "-SESSIONNAME-") ],
                         [ sg.HorizontalSeparator() ],

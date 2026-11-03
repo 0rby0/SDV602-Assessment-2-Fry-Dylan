@@ -1,7 +1,7 @@
 import FreeSimpleGUI as sg
 
 class DESSelection:
-    def show(self):
+    def show(self, app):
         controls_layout = [
                                     [ sg.Button(button_text = "Sign Out") ],
                                     [ sg.Button(button_text = "Create") ],

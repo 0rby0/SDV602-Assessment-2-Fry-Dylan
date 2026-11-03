@@ -1,7 +1,7 @@
 import FreeSimpleGUI as sg
 
 class DataSourceManager:
-    def show(self):
+    def show(self, app):
         source_layout = [
                                     [ sg.Text(text = "Dataset Name", key = "-DATASETNAME-") ],
                                     [ sg.Table(values = [["None"]], key = "-DATASOURCES-") ]

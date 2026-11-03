@@ -1,7 +1,7 @@
 import FreeSimpleGUI as sg
 
 class DESConfig:
-    def show(self):
+    def show(self, app):
         layout = [
                         [ sg.Text("Type"), sg.Combo(values = ["Line", "Pie", "Bar"], key = "-TYPESELECT-") ],
                         [ sg.Text("Y Key"), sg.Combo(values = ["None"], key = "-YSELECT-") ],

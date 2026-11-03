@@ -1,7 +1,7 @@
 import FreeSimpleGUI as sg
 
 class DESWindow:
-    def show(self):
+    def show(self, app):
         layout_column_1 = [
                                         [ sg.Graph(canvas_size = (100, 100), graph_bottom_left = (100, 100), graph_top_right = (0, 0), key = "-GRAPHDISPLAY-") ],
                                         [ sg.Graph(canvas_size = (100, 10), graph_bottom_left = (100, 10), graph_top_right = (0, 0), key = "-GRAPHCONTROLS-") ]
