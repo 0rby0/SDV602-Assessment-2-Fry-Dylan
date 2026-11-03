@@ -13,6 +13,7 @@ class LogIn:
 		# Show the window
 		self.show()
   
+  
 	def create_window(self):
 		title = [ [sg.Text("DES Analysis App")] ]
 
@@ -30,6 +31,7 @@ class LogIn:
 
 		return sg.Window("DES Analysis App", layout = layout)
   
+  
 	def show(self):
 			while True:
 				event, values = self.window.read()
@@ -41,16 +43,16 @@ class LogIn:
 						if self.showing_login_screen:
 							# Attempt to log the user in with the given username and password				
 							if self.app.user.log_in_user(username = values["-USERNAME-"], password = values["-PASSWORD-"]) == "Login Success":
-								# If they have successfully logged in, open the session manager
+     							# If they have successfully logged in, open the session manager
 								DESSelection().show(self.app)
 								# Close this window
 								break
+
 						else:
 							if self.app.user.register_user(username = values["-USERNAME-"], password = values["-PASSWORD-"]) == "User created successfully":
 								# If it is successfull, open the DES selection window
-								DESSelection().show(self.app)
-								# Close this window
-								break
+								self.showing_login_screen = not self.showing_login_screen
+								self.update_window()
 					
 					case "-TOGGLE-":
 						# Switch between displaying the login and sign up screen
@@ -65,6 +67,7 @@ class LogIn:
 						pass
 
 			self.window.close()
+
 
 	def update_window(self):
 		# Update the window only if it has just changed

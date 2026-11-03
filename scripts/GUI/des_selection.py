@@ -1,35 +1,46 @@
 import FreeSimpleGUI as sg
 
 class DESSelection:
-    def show(self, app):
-        controls_layout = [
-                                    [ sg.Button(button_text = "Sign Out") ],
-                                    [ sg.Button(button_text = "Create") ],
-                                    [ sg.Button(button_text = "Delete") ],
-                                    [ sg.Button(button_text = "Select") ]
-                                  ]
+	def __init__(self, app):
+		# Create the window
+		self.window = self.create_window()
 
-        search_layout = [
-                        [ sg.Text("Username", key = "-USERNAME-"), sg.Input(key = "-SEARCH-") ],
-                        [ sg.Table(values = [["None"]], key = "-SESSIONS-") ]
-                    ]
+		# Create a permanent reference to the app
+		self.app = app
 
-        layout = [
-                        [ sg.Column(search_layout), sg.Column(controls_layout) ]
-                    ]
+		# Show the window
+		self.show()
+   
+   
+	def create_window(self):
+		controls_layout = [
+												[ sg.Button(button_text = "Sign Out") ],
+												[ sg.Button(button_text = "Create") ],
+												[ sg.Button(button_text = "Delete") ],
+												[ sg.Button(button_text = "Select") ]
+											]
 
-        window = sg.Window("DES Analysis App", layout = layout)
+		search_layout = [
+								[ sg.Text("Username", key = "-USERNAME-"), sg.Input(key = "-SEARCH-") ],
+								[ sg.Table(values = [["None"]], key = "-SESSIONS-") ]
+						]
 
-        running = True
-        while running:
-            event, values = window.read()
+		layout = [
+								[ sg.Column(search_layout), sg.Column(controls_layout) ]
+						]
 
-            match event:
-                case sg.WINDOW_CLOSED:
-                    running = False
-                    break
+		return sg.Window("DES Analysis App", layout = layout)
+   
+   
+	def show(self):
+		while True:
+				event, values = self.window.read()
 
-                case _:
-                    break
+				match event:
+					case sg.WINDOW_CLOSED:
+						break
 
-        window.close()
+					case _:
+						pass
+
+		self.window.close()

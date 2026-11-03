@@ -1,36 +1,47 @@
 import FreeSimpleGUI as sg
 
 class DESWindow:
-    def show(self, app):
-        layout_column_1 = [
-                                        [ sg.Graph(canvas_size = (100, 100), graph_bottom_left = (100, 100), graph_top_right = (0, 0), key = "-GRAPHDISPLAY-") ],
-                                        [ sg.Graph(canvas_size = (100, 10), graph_bottom_left = (100, 10), graph_top_right = (0, 0), key = "-GRAPHCONTROLS-") ]
-                                    ]
+	def __init__(self, app):
+		# Create the window
+		self.window = self.create_window()
 
-        layout_column_2 = [
-                                        [ sg.Text(text = "Mode", key = "-APPMODE-"), sg.Button(button_text = "Configure", key = "-CONFIGURE-") ],
-                                        [ sg.Multiline(disabled = True, key = "-DATASETDETAILS-") ],
-                                        [ sg.Button(button_text = "Manage Data Sources", key = "-MANAGE-") ],
-                                        [ sg.Multiline(disabled = True, key = "-GRAPHDESCRIPTION-") ]
-                                    ]
+		# Create a permanent reference to the app
+		self.app = app
 
-        layout = [
-                        [ sg.Column(layout = layout_column_1) ],
-                        [ sg.Column(layout = layout_column_2) ]
-                    ]
+		# Show the window
+		self.show()
+   
+   
+	def create_window(self):
+		layout_column_1 = [
+													[ sg.Graph(canvas_size = (100, 100), graph_bottom_left = (100, 100), graph_top_right = (0, 0), key = "-GRAPHDISPLAY-") ],
+													[ sg.Graph(canvas_size = (100, 10), graph_bottom_left = (100, 10), graph_top_right = (0, 0), key = "-GRAPHCONTROLS-") ]
+											]
 
-        window = sg.Window("DES Analysis App", layout = layout)
+		layout_column_2 = [
+													[ sg.Text(text = "Mode", key = "-APPMODE-"), sg.Button(button_text = "Configure", key = "-CONFIGURE-") ],
+													[ sg.Multiline(disabled = True, key = "-DATASETDETAILS-") ],
+													[ sg.Button(button_text = "Manage Data Sources", key = "-MANAGE-") ],
+													[ sg.Multiline(disabled = True, key = "-GRAPHDESCRIPTION-") ]
+											]
 
-        running = True
-        while running:
-            event, values = window.read()
+		layout = [
+							[ sg.Column(layout = layout_column_1) ],
+							[ sg.Column(layout = layout_column_2) ]
+						]
 
-            match event:
-                case sg.WINDOW_CLOSED:
-                    running = False
-                    break
+		return sg.Window("DES Analysis App", layout = layout)
+   
+   
+	def show(self):
+		while True:
+			event, values = self.window.read()
 
-                case _:
-                    break
+			match event:
+					case sg.WINDOW_CLOSED:
+						break
 
-        window.close()
+					case _:
+						pass
+
+		self.window.close()

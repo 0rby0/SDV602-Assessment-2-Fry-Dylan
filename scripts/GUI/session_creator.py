@@ -1,25 +1,36 @@
 import FreeSimpleGUI as sg
 
 class SessionCreator:
-    def show(self, app):
-        layout = [
-                        [ sg.Text("Create Session") ],
-                        [ sg.Text("Session Name"), sg.Input(key = "-SESSIONNAME-") ],
-                        [ sg.Button(button_text = "Cancel", key = "-CANCEL-"), sg.Checkbox(text = "Public", key = "-PUBLICTOGGLE-"), sg.Button(button_text = "Create", key = "-SUBMIT-") ]
-                    ]
+	def __init__(self, app):
+		# Create the window
+		self.window = self.create_window()
 
-        window = sg.Window("DES Analysis App", layout = layout)
+		# Create a permanent reference to the app
+		self.app = app
 
-        running = True
-        while running:
-            event, values = window.read()
+		# Show the window
+		self.show()
 
-            match event:
-                case sg.WINDOW_CLOSED:
-                    running = False
-                    break
 
-                case _:
-                    break
+	def create_window(self):
+		layout = [
+							[ sg.Text("Create Session") ],
+							[ sg.Text("Session Name"), sg.Input(key = "-SESSIONNAME-") ],
+							[ sg.Button(button_text = "Cancel", key = "-CANCEL-"), sg.Checkbox(text = "Public", key = "-PUBLICTOGGLE-"), sg.Button(button_text = "Create", key = "-SUBMIT-") ]
+						]
 
-        window.close()
+		return sg.Window("DES Analysis App", layout = layout)
+
+
+	def show(self):
+		while True:
+			event, values = self.window.read()
+
+			match event:
+					case sg.WINDOW_CLOSED:
+						break
+
+					case _:
+						pass
+
+		self.window.close()

@@ -1,3 +1,7 @@
+> Commit: Updating all menus to use same structure as login
+>
+> - The commit name is basically it for this one
+
 > Commit: Sign up menu functionality
 >
 > - The sign up menu now lets the user go to the log in form or create a new user

@@ -1,28 +1,39 @@
 import FreeSimpleGUI as sg
 
 class DESConfig:
-    def show(self, app):
-        layout = [
-                        [ sg.Text("Type"), sg.Combo(values = ["Line", "Pie", "Bar"], key = "-TYPESELECT-") ],
-                        [ sg.Text("Y Key"), sg.Combo(values = ["None"], key = "-YSELECT-") ],
-                        [ sg.Text("X Key"), sg.Combo(values = ["None"], key = "-XSELECT-") ],
-                        [ sg.Text("Legend"), sg.Combo(values = ["None"], key = "-LEGENDSELECT-") ],
-                        [ sg.Text("Legend Series"), sg.Combo(values = ["None"], key = "-SUBLEGENDSELECT-") ],
-                        [ sg.Button(button_text = "Cancel", key = "-CANCEL-"), sg.Button(button_text = "Submit", key = "-SUBMIT-") ]
-                    ]
+	def __init__(self, app):
+		# Create the window
+		self.window = self.create_window()
 
-        window = sg.Window("DES Analysis App", layout = layout)
+		# Create a permanent reference to the app
+		self.app = app
 
-        running = True
-        while running:
-            event, values = window.read()
+		# Show the window
+		self.show()
+   
+   
+	def create_window(self):
+		layout = [
+							[ sg.Text("Type"), sg.Combo(values = ["Line", "Pie", "Bar"], key = "-TYPESELECT-") ],
+							[ sg.Text("Y Key"), sg.Combo(values = ["None"], key = "-YSELECT-") ],
+							[ sg.Text("X Key"), sg.Combo(values = ["None"], key = "-XSELECT-") ],
+							[ sg.Text("Legend"), sg.Combo(values = ["None"], key = "-LEGENDSELECT-") ],
+							[ sg.Text("Legend Series"), sg.Combo(values = ["None"], key = "-SUBLEGENDSELECT-") ],
+							[ sg.Button(button_text = "Cancel", key = "-CANCEL-"), sg.Button(button_text = "Submit", key = "-SUBMIT-") ]
+						]
 
-            match event:
-                case sg.WINDOW_CLOSED:
-                    running = False
-                    break
+		return sg.Window("DES Analysis App", layout = layout)
+   
+   
+	def show(self):
+		while True:
+			event, values = self.window.read()
 
-                case _:
-                    break
+			match event:
+					case sg.WINDOW_CLOSED:
+						break
 
-        window.close()
+					case _:
+						pass
+
+		self.window.close()
