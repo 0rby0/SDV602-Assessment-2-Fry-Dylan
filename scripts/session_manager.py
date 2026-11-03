@@ -15,9 +15,6 @@ class SessionManager:
 		"""Retrieves and returns the names of all remote sessions being stored in the database."""
 		session_list = []
 		retrieved_sessions = self.db.get_all_sessions()
-
-		if not retrieved_sessions:
-			return "No sessions"
   
 		for session in retrieved_sessions:
 			if session["public"] == True:

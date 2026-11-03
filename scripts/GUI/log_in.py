@@ -43,10 +43,10 @@ class LogIn:
 						if self.showing_login_screen:
 							# Attempt to log the user in with the given username and password				
 							if self.app.user.log_in_user(username = values["-USERNAME-"], password = values["-PASSWORD-"]) == "Login Success":
+								# Hide this window
+								self.window.hide()
      							# If they have successfully logged in, open the session manager
-								DESSelection().show(self.app)
-								# Close this window
-								break
+								DESSelection(self.app, self.window)
 
 						else:
 							if self.app.user.register_user(username = values["-USERNAME-"], password = values["-PASSWORD-"]) == "User created successfully":

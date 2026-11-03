@@ -1,3 +1,9 @@
+> Commit: DES selection window functionality
+>
+> - The DES selection window should now update to show the sessions which are returned by the search session function
+> - There is also a lock on the window so that it cannot be closed while the window is updating to hopefully stop it throwing an error, there is probably a better way to handle this
+> - The main part of the controls are yet to be completed, I need to rework GUI management to make it easier to run
+
 > Commit: Updating all menus to use same structure as login
 >
 > - The commit name is basically it for this one
