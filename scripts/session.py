@@ -14,7 +14,7 @@ class Session:
 		self.db = None
 		self._chat = None
   
-		if user is not None:
+		if user.username is not None:
 			self._chat = Chat()
 			self.db = DatabaseConnection()
 			self.db.pull_data(self)

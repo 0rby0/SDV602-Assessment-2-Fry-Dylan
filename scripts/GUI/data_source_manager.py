@@ -1,12 +1,10 @@
 import FreeSimpleGUI as sg
 
 class DataSourceManager:
-	def __init__(self, app, des_window, session_index):
-		# Create a permanent reference to the app and DES window
-		self.app = app
+	def __init__(self, des_window, session):
 		self.des_window = des_window
 
-		self.session_index = session_index
+		self.session = session
 
 		# Create the window
 		self.window = self.create_window()
@@ -41,12 +39,8 @@ class DataSourceManager:
 			event, values = self.window.read(10)
 
 			if values:
-				if self.session_index is None:
-					datasets = self.app.session._files.datasets
-					datasources = self.app.session._files.get_data_sources(values["-DATASETS-"])
-				else:
-					datasets = self.app.sm.sessions[self.session_id]._files.datasets
-					datasources = self.app.sm.sessions[self.session_id]._files.get_data_sources(values["-DATASETS-"])
+				datasets = self.session._files.datasets
+				datasources = self.session._files.get_data_sources(values["-DATASETS-"])
 
 				self.window["-DATASETS-"].update(values = datasets)
 				self.window["-DATASETNAME-"].update(value = values["-DATASETS-"])
@@ -67,10 +61,7 @@ class DataSourceManager:
 
 				case "-SELECT-":
 					# Update the DES screen to be using the selected dataset
-					if self.session_index is None:
-						self.app.data_display.data_conf.update_dataset(self.app.session.compile_dataset(values["-DATASETS-"]))
-					else:
-						self.app.data_display.data_conf.update_dataset(self.app.sm[self.session_id].compile_dataset(values["-DATASETS-"]))
+					self.app.data_display.data_conf.update_dataset(self.session.compile_dataset(values["-DATASETS-"]))
 
 					# Show the DES screen and close this window
 					self.des_window.un_hide()

@@ -1,22 +1,19 @@
 import FreeSimpleGUI as sg
 
-from GUI.chat_window import ChatWindow
+from session_manager import SessionManager
+
 from GUI.data_source_manager import DataSourceManager
 from GUI.des_config import DESConfig
 
 class DESWindow:
-	def __init__(self, app, session_index):
-		# Create a permanent reference to the app
-		self.app = app
-		self.children = []
+	def __init__(self, session_name):
+		self.session = SessionManager().get_session_by_name(session_name)
 
-		self.session_index = session_index
+		self.children = []
 
 		# Create the window
 		self.window = self.create_window()
-		# Show the window
-		self.show()
-   
+
    
 	def create_window(self):
 		layout_column_1 = [
@@ -46,7 +43,7 @@ class DESWindow:
 			match event:
 				case "-MANAGE-":
 					self.window.hide()
-					DataSourceManager(app = self.app, des_window = self, session_index = self.session_index)
+					DataSourceManager(des_window = self, session_name = self.session.session_name)
 
 				case "-CONFIGURE-":
 					pass

@@ -1,19 +1,22 @@
 import FreeSimpleGUI as sg
+import multiprocessing as mp
+
+from GUI.chat_window import ChatWindow
 from GUI.des_window import DESWindow
 from GUI.session_creator import SessionCreator
 
 class DESSelection:
-	def __init__(self, app, login_window):
-		# Create the window
-		self.window = self.create_window()
-
+	def __init__(self, login_window):
 		# Create a reference to the login window
 		self.login_window = login_window
 
-		# Create a permanent reference to the app and update switch
-		self.app = app
 		self.is_updating = False
 
+		self.sessions = [["None"]]
+		self.windows = []
+
+		# Create the window
+		self.window = self.create_window()
 		# Show the window
 		self.show()
    
@@ -28,7 +31,7 @@ class DESSelection:
 
 		search_layout = [
 											[ sg.Text("Username", key = "-USERNAME-"), sg.Push(), sg.Input(key = "-SEARCH-") ],
-											[ sg.Table(values = [["None"]], auto_size_columns = False, col_widths = [50], num_rows = 10, justification = "left", headings = ["Public Sessions"], key = "-SESSIONS-") ]
+											[ sg.Table(values = self.sessions, auto_size_columns = False, col_widths = [50], num_rows = 10, justification = "left", headings = ["Public Sessions"], key = "-SESSIONS-") ]
 										]
 
 		layout = [[ sg.Column(search_layout), sg.Column(controls_layout) ]]
@@ -45,30 +48,32 @@ class DESSelection:
 
 			match event:
 				case "-SIGNOUT-":
-					# Redisplay the login window
-					self.login_window.un_hide()
 					# Close this window
-					break
+					self.window.close()
+
+					# Redisplay the login window
+					self.login_window.window.un_hide()
+					self.login_window.show()
 
 				case "-CREATE-":
 					self.window.hide()
 					SessionCreator(app = self.app, des_selection_window = self)
-					break
 
 				case "-DELETE-":
 					pass
 
 				case "-SELECT-":
-					self.window.hide()
-					DESWindow(app = self.app)
-					break
+					self.app.sm.join_session(session_name = self.sessions[values["-SESSIONS-"][0]][0])
+
+					des = DESWindow(session_name = self.sessions[values["-SESSIONS-"][0]][0])
+					des_process = mp.Process(target = des.show)
+					self.windows.append(des_process)
+					des_process.start()
+
 		
 				case sg.WINDOW_CLOSED:
 					if not self.is_updating:
 						break
-
-				case _:
-					pass
 
 		self.close_window()
 
@@ -88,8 +93,9 @@ class DESSelection:
 			table_ready_result = []
 			for entry in result:
 				table_ready_result.append([entry])
-			
-			self.window["-SESSIONS-"].update(values = table_ready_result, select_rows = current_selection)
+
+			self.sessions = table_ready_result
+			self.window["-SESSIONS-"].update(values = self.sessions, select_rows = current_selection)
 			self.window["-USERNAME-"].update(value = self.app.user.username)
 
 		self.is_updating = False

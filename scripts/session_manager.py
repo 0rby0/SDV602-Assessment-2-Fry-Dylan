@@ -1,14 +1,26 @@
 # Create, Delete, and load sessions
 from database_connect import DatabaseConnection
 from session_user_manager import SessionUserManager
+from data_displayer import DataDisplay
 from session import Session
+from user import User
+
 
 class SessionManager:
-	def __init__(self, user):
+	instance = None
+
+	def __new__(cls):
+		if cls.instance is None:
+			cls.instance = super().__new__(cls)
+		return cls.instance
+
+	
+	def __init__(self):
 		self.sessions = []
-		self.user = user
+		self.user = User()
 		self.link = SessionUserManager()
 		self.db = DatabaseConnection()
+		self.data_display = DataDisplay()
 
 
 	def get_remote_session_names(self):
@@ -106,5 +118,13 @@ class SessionManager:
    
 		# Only show the error message if none of the names match
 		return "Not in session"
-		
+
+
+	def get_session_by_name(self, session_name):
+		if not session_name:
+			return None
+
+		for session in self.sessions:
+			if session.session_name == session_name:
+				return session
 		

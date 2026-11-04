@@ -60,13 +60,8 @@ class LogIn:
 						self.update_window()
      
 					case sg.WINDOW_CLOSED:
+						self.close_window()
 						break
-
-					case _:
-						# If there is no input then do nothing
-						pass
-
-			self.close_window()
 
 
 	def update_window(self):

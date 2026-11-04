@@ -1,3 +1,11 @@
+> Commit: Session referencing update - Part 1
+>
+> - Sessions cannot be selected by an index since this would be able to change if a window is closed
+> - Sessions should instead get by a specific value e.g. unique name or id
+> - The session manager now has a get session by name function which should resolve this problem
+> - Stuff it the session manager is a singleton now and it works in local mode as well
+> - Sessions now have a data display per session
+
 > Commit: DES window connections
 >
 > - Some of the DES window functions have been implemented

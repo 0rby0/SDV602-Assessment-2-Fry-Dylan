@@ -31,6 +31,7 @@ class SessionCreator:
 					case "-SUBMIT-":
 						self.app.sm.create_session(session_name = values["-SESSIONNAME-"], public = values["-PUBLICTOGGLE-"], redirect = False)
 						self.des_selection_window.window.un_hide()
+						self.des_selection_window.show()
 						self.window.close()
 
 					case "-CANCEL-":

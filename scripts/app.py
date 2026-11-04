@@ -1,26 +1,18 @@
 # The entrypoint into the application, parses any CLI arguments, establishes starting values and runs the application.
 from session import Session
 from session_manager import SessionManager
-from data_displayer import DataDisplay
-from user import User
 from headless import HeadlessTest
 from GUI.log_in import LogIn
 from GUI.des_window import DESWindow
 import argparse
 
-class App:
+class App():
 	def __init__(self, REMOTE : bool, verbosity : int):
-		self.sm = None
-		self.user = None
-		self.session = None
+		self.remote = REMOTE
+		self.sm = SessionManager()
 		
-		if REMOTE:
-			self.user = User()
-			self.sm = SessionManager(self.user)
-		else:
-			self.session = Session("Local Session", self.user)
-	
-		self.data_display = DataDisplay()
+		if not REMOTE:
+			self.sm.sessions.append(Session("Local Session", self.sm.user))
 	
 		if verbosity >= 0:
 			HeadlessTest(self, verbosity = verbosity)
@@ -28,7 +20,7 @@ class App:
 			if REMOTE:
 				LogIn(self)
 			else:
-				DESWindow(self, None)
+				DESWindow(self, "Local Session")
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
