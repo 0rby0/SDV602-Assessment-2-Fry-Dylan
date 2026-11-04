@@ -1,3 +1,7 @@
+> Commit: Chat window functionality
+>
+> - Chat window now displays the session chat and can send messages
+
 > Commit: DES config functionality
 >
 > - DES config panel now sets values for DES
