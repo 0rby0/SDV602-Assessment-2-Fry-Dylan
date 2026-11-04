@@ -1,16 +1,15 @@
 import FreeSimpleGUI as sg
 
 class DataSourceManager:
-	def __init__(self, app, des_window, session_id):
-		# Create the window
-		self.window = self.create_window()
-
+	def __init__(self, app, des_window, session_index):
 		# Create a permanent reference to the app and DES window
 		self.app = app
 		self.des_window = des_window
 
-		self.session_id = session_id
+		self.session_index = session_index
 
+		# Create the window
+		self.window = self.create_window()
 		# Show the window
 		self.show()
   
@@ -41,9 +40,17 @@ class DataSourceManager:
 		while True:
 			event, values = self.window.read(10)
 
-			self.window["-DATASETS-"].update(values = self.app.sm.sessions[self.session_id]._files.datasets)
-			self.window["-DATASETNAME-"].update(text = values["-DATASETS-"])
-			self.window["-DATASOURCES-"].update(values = self.app.sm.sessions[self.session_id]._files.get_data_sources(values["-DATASETS-"]))
+			if values:
+				if self.session_index is None:
+					datasets = self.app.session._files.datasets
+					datasources = self.app.session._files.get_data_sources(values["-DATASETS-"])
+				else:
+					datasets = self.app.sm.sessions[self.session_id]._files.datasets
+					datasources = self.app.sm.sessions[self.session_id]._files.get_data_sources(values["-DATASETS-"])
+
+				self.window["-DATASETS-"].update(values = datasets)
+				self.window["-DATASETNAME-"].update(value = values["-DATASETS-"])
+				self.window["-DATASOURCES-"].update(values = datasources)
 
 			match event:
 				case "-ADDSOURCE-":
@@ -59,15 +66,18 @@ class DataSourceManager:
 					pass
 
 				case "-SELECT-":
-					self.app.data_display.data_conf.update_dataset(self.app.sm[self.session_id].compile_dataset(values["-DATASETS-"]))
+					# Update the DES screen to be using the selected dataset
+					if self.session_index is None:
+						self.app.data_display.data_conf.update_dataset(self.app.session.compile_dataset(values["-DATASETS-"]))
+					else:
+						self.app.data_display.data_conf.update_dataset(self.app.sm[self.session_id].compile_dataset(values["-DATASETS-"]))
+
+					# Show the DES screen and close this window
 					self.des_window.un_hide()
 					self.window.close()
 
 				case sg.WINDOW_CLOSED:
 					break
-
-				case _:
-					pass
 
 		self.close_window()
 

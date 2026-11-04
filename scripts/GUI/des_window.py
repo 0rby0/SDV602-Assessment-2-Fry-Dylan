@@ -1,14 +1,19 @@
 import FreeSimpleGUI as sg
 
-class DESWindow:
-	def __init__(self, app):
-		# Create the window
-		self.window = self.create_window()
+from GUI.chat_window import ChatWindow
+from GUI.data_source_manager import DataSourceManager
+from GUI.des_config import DESConfig
 
+class DESWindow:
+	def __init__(self, app, session_index):
 		# Create a permanent reference to the app
 		self.app = app
 		self.children = []
 
+		self.session_index = session_index
+
+		# Create the window
+		self.window = self.create_window()
 		# Show the window
 		self.show()
    
@@ -39,12 +44,16 @@ class DESWindow:
 			event, values = self.window.read()
 
 			match event:
-					case sg.WINDOW_CLOSED:
-						break
+				case "-MANAGE-":
+					self.window.hide()
+					DataSourceManager(app = self.app, des_window = self, session_index = self.session_index)
 
-					case _:
-						pass
+				case "-CONFIGURE-":
+					pass
 
+				case sg.WINDOW_CLOSED:
+					break
+		
 		self.close_window()
 
 

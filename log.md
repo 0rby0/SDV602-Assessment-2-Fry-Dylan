@@ -1,3 +1,10 @@
+> Commit: DES window connections
+>
+> - Some of the DES window functions have been implemented
+> - This commit is mainly fixing issues with the other menus that I have already made
+> - All of the menus which can appear in local AND remote mode should now check before trying to access the session manager
+> - Im pretty sure I need to make the data display attached to each session but I'll fix that next
+
 > Commit: Datasource manager functionality
 >
 > - Added function to return the filenames for a given dataset

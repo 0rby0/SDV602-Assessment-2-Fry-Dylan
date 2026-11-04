@@ -28,7 +28,7 @@ class App:
 			if REMOTE:
 				LogIn(self)
 			else:
-				DESWindow(self)
+				DESWindow(self, None)
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
