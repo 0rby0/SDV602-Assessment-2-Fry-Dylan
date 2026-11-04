@@ -1,13 +1,14 @@
 import FreeSimpleGUI as sg
+
+from session_manager import SessionManager
+
 from GUI.des_selection import DESSelection
 
 class LogIn:
-	def __init__(self, app):
+	def __init__(self):
 		# Create the window
 		self.window = self.create_window()
 
-		# Create a permanent reference to the app and current screen
-		self.app = app
 		self.showing_login_screen = True
 
 		# Show the window
@@ -38,18 +39,16 @@ class LogIn:
 
 				match event:
 					case "-SUBMIT-":
-						if self.app.user is None: return
-      
 						if self.showing_login_screen:
 							# Attempt to log the user in with the given username and password				
-							if self.app.user.log_in_user(username = values["-USERNAME-"], password = values["-PASSWORD-"]) == "Login Success":
+							if SessionManager().user.log_in_user(username = values["-USERNAME-"], password = values["-PASSWORD-"]) == "Login Success":
 								# Hide this window
 								self.window.hide()
      							# If they have successfully logged in, open the session manager
-								DESSelection(app = self.app, login_window = self)
+								DESSelection(login_window = self)
 
 						else:
-							if self.app.user.register_user(username = values["-USERNAME-"], password = values["-PASSWORD-"]) == "User created successfully":
+							if SessionManager().user.register_user(username = values["-USERNAME-"], password = values["-PASSWORD-"]) == "User created successfully":
 								# If it is successfull, return to the login screen
 								self.showing_login_screen = not self.showing_login_screen
 								self.update_window()

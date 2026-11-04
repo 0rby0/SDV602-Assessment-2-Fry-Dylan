@@ -4,10 +4,11 @@ from session_manager import SessionManager
 
 from GUI.data_source_manager import DataSourceManager
 from GUI.des_config import DESConfig
+from GUI.chat_window import ChatWindow
 
 class DESWindow:
 	def __init__(self, session_name):
-		self.session = SessionManager().get_session_by_name(session_name)
+		self.session_name = session_name
 
 		self.children = []
 
@@ -43,7 +44,7 @@ class DESWindow:
 			match event:
 				case "-MANAGE-":
 					self.window.hide()
-					DataSourceManager(des_window = self, session_name = self.session.session_name)
+					DataSourceManager(des_window = self, session_name = self.session_name)
 
 				case "-CONFIGURE-":
 					pass

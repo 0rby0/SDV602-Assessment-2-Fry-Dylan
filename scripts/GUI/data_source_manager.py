@@ -1,10 +1,12 @@
 import FreeSimpleGUI as sg
 
+from session_manager import SessionManager
+
 class DataSourceManager:
-	def __init__(self, des_window, session):
+	def __init__(self, des_window, session_name):
 		self.des_window = des_window
 
-		self.session = session
+		self.session = SessionManager().get_session_by_name(session_name)
 
 		# Create the window
 		self.window = self.create_window()
@@ -41,6 +43,7 @@ class DataSourceManager:
 			if values:
 				datasets = self.session._files.datasets
 				datasources = self.session._files.get_data_sources(values["-DATASETS-"])
+
 
 				self.window["-DATASETS-"].update(values = datasets)
 				self.window["-DATASETNAME-"].update(value = values["-DATASETS-"])

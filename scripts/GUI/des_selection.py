@@ -1,7 +1,8 @@
 import FreeSimpleGUI as sg
 import multiprocessing as mp
 
-from GUI.chat_window import ChatWindow
+from session_manager import SessionManager
+
 from GUI.des_window import DESWindow
 from GUI.session_creator import SessionCreator
 
@@ -57,13 +58,13 @@ class DESSelection:
 
 				case "-CREATE-":
 					self.window.hide()
-					SessionCreator(app = self.app, des_selection_window = self)
+					SessionCreator(des_selection_window = self)
 
 				case "-DELETE-":
 					pass
 
 				case "-SELECT-":
-					self.app.sm.join_session(session_name = self.sessions[values["-SESSIONS-"][0]][0])
+					SessionManager().join_session(session_name = self.sessions[values["-SESSIONS-"][0]][0])
 
 					des = DESWindow(session_name = self.sessions[values["-SESSIONS-"][0]][0])
 					des_process = mp.Process(target = des.show)
@@ -83,7 +84,7 @@ class DESSelection:
 		self.is_updating = True
   
 		if search_input is not None:
-			result =  self.app.sm.search_sessions(search_input)
+			result =  SessionManager().search_sessions(search_input)
    
 			# Make sure the result is always in a list
 			if isinstance(result, str):
@@ -96,7 +97,7 @@ class DESSelection:
 
 			self.sessions = table_ready_result
 			self.window["-SESSIONS-"].update(values = self.sessions, select_rows = current_selection)
-			self.window["-USERNAME-"].update(value = self.app.user.username)
+			self.window["-USERNAME-"].update(value = SessionManager().user.username)
 
 		self.is_updating = False
 

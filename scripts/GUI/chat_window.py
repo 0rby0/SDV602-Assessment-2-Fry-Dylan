@@ -1,8 +1,10 @@
 import FreeSimpleGUI as sg
 
+from session_manager import SessionManager
+
 class ChatWindow:
-	def __init__(self, session):
-		self.session = session
+	def __init__(self, session_name):
+		self.session = SessionManager().get_session_by_name(session_name)
 
 		# Create the window
 		self.window = self.create_window()
@@ -10,7 +12,7 @@ class ChatWindow:
    
 	def create_window(self):
 		layout = [
-							[ sg.Text(self.session_name, size = (40, 1), justification = "center") ],
+							[ sg.Text(self.session.session_name, size = (40, 1), justification = "center") ],
 							[ sg.HorizontalSeparator() ],
 							[ sg.Multiline(size = (47, 25), disabled = True, key = "-CHATLOG-") ],
 							[ sg.Input(key = "-MESSAGEINPUT-"), sg.Button(">", key = "-SUBMIT-") ]
@@ -27,7 +29,7 @@ class ChatWindow:
 
 			match event:
 				case "-SUBMIT-":
-					self.app.session.send_message(self.app.user, values["-MESSAGEINPUT-"])
+					self.session.send_message(SessionManager().user, values["-MESSAGEINPUT-"])
 
 
 	def close_window(self):

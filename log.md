@@ -1,3 +1,7 @@
+> Commit: Session referencing update - Part 2
+>
+> - Updated the references in all the GUI classes to point to the correct places
+
 > Commit: Session referencing update - Part 1
 >
 > - Sessions cannot be selected by an index since this would be able to change if a window is closed

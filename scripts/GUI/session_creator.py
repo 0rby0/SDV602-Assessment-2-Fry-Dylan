@@ -1,14 +1,13 @@
 import FreeSimpleGUI as sg
 
-class SessionCreator:
-	def __init__(self, app, des_selection_window):
-		# Create the window
-		self.window = self.create_window()
+from session_manager import SessionManager
 
-		# Create a permanent reference to the app and DES selection window
-		self.app = app
+class SessionCreator:
+	def __init__(self, des_selection_window):
 		self.des_selection_window = des_selection_window
 
+		# Create the window
+		self.window = self.create_window()
 		# Show the window
 		self.show()
 
@@ -29,21 +28,17 @@ class SessionCreator:
 
 			match event:
 					case "-SUBMIT-":
-						self.app.sm.create_session(session_name = values["-SESSIONNAME-"], public = values["-PUBLICTOGGLE-"], redirect = False)
+						SessionManager().create_session(session_name = values["-SESSIONNAME-"], public = values["-PUBLICTOGGLE-"], redirect = False)
+						self.window.close()
 						self.des_selection_window.window.un_hide()
 						self.des_selection_window.show()
-						self.window.close()
 
 					case "-CANCEL-":
 						self.des_selection_window.window.un_hide()
 						self.window.close()
 
 					case sg.WINDOW_CLOSED:
-						self.des_selection_window.window.un_hide()
 						break
-
-					case _:
-						pass
 
 		self.close_window()
 

@@ -18,9 +18,9 @@ class App():
 			HeadlessTest(self, verbosity = verbosity)
 		else:
 			if REMOTE:
-				LogIn(self)
+				LogIn()
 			else:
-				DESWindow(self, "Local Session")
+				DESWindow("Local Session")
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()

@@ -1,19 +1,19 @@
 import FreeSimpleGUI as sg
 
+from session_manager import SessionManager
+
 class DESConfig:
-	def __init__(self, app):
+	def __init__(self, session_name):
+		self.session = SessionManager().get_session_by_name(session_name)
+
 		# Create the window
 		self.window = self.create_window()
-
-		# Create a permanent reference to the app
-		self.app = app
-
 		# Show the window
 		self.show()
    
    
 	def create_window(self):
-		initial_settings = self.app.data_display.data_conf.get_settings()
+		initial_settings = self.session.data_display.data_conf.get_settings()
 
 		layout = [
 							[ sg.Text("Type"), sg.Combo(values = ["Line", "Pie", "Bar"], default_value = "Line", key = "-TYPESELECT-") ],
@@ -31,7 +31,7 @@ class DESConfig:
 		while True:
 			event, values = self.window.read(10)
 
-			settings = self.app.data_display.data_conf.get_settings()
+			settings = self.session.data_display.data_conf.get_settings()
 
 			self.window["-YSELECT-"].update(values = settings["y"]["options"])
 			self.window["-XSELECT-"].update(values = settings["x"]["options"])
@@ -40,10 +40,10 @@ class DESConfig:
 
 			match event:
 				case "-SUBMIT-":
-					self.app.data_display.data_conf.change_setting("x", values["-XSELECT-"])
-					self.app.data_display.data_conf.change_setting("y", values["-YSELECT-"])
-					self.app.data_display.data_conf.change_setting("series", values["-LEGENDSELECT-"])
-					self.app.data_display.data_conf.change_setting("get", values["-SUBLEGENDSELECT-"])
+					self.session.data_display.data_conf.change_setting("x", values["-XSELECT-"])
+					self.session.data_display.data_conf.change_setting("y", values["-YSELECT-"])
+					self.session.data_display.data_conf.change_setting("series", values["-LEGENDSELECT-"])
+					self.session.data_display.data_conf.change_setting("get", values["-SUBLEGENDSELECT-"])
 
 				case sg.WINDOW_CLOSED | "-CANCEL-":
 					break

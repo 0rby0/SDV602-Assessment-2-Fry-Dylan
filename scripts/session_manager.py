@@ -8,6 +8,7 @@ from user import User
 
 class SessionManager:
 	instance = None
+	instantiated = False
 
 	def __new__(cls):
 		if cls.instance is None:
@@ -16,11 +17,14 @@ class SessionManager:
 
 	
 	def __init__(self):
-		self.sessions = []
-		self.user = User()
-		self.link = SessionUserManager()
-		self.db = DatabaseConnection()
-		self.data_display = DataDisplay()
+		if not self.instantiated:
+			self.sessions = []
+			self.user = User()
+			self.link = SessionUserManager()
+			self.db = DatabaseConnection()
+			self.data_display = DataDisplay()
+
+			self.instantiated = True
 
 
 	def get_remote_session_names(self):
@@ -62,17 +66,19 @@ class SessionManager:
 
 	def create_session(self, session_name, public = True, redirect = False):
 		"""Creates a new session in the session list if one does not exist"""
+
+		print(self.user)
 		
 		# Check that a session doesn't already exist
 		for session in self.db.get_all_sessions():
 			if session["session"] == session_name:
+				# If the session already exists, should you join it instead
 				if redirect:
 					return self.join_session(session_name)
 				return "Session already exists"
  
- 
-		self.link.create_link(username = self.user.username, session = session_name)
 		self.sessions.append(Session(session_name, self.user.username, public = public))
+		self.link.create_link(username = self.user.username, session = session_name)
 		return f"Successfully joined session: '{session_name}'"
 
 
