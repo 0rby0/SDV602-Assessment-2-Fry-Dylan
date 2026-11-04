@@ -28,7 +28,17 @@ class SessionCreator:
 			event, values = self.window.read()
 
 			match event:
+					case "-SUBMIT-":
+						self.app.sm.create_session(session_name = values["-SESSIONNAME-"], public = values["-PUBLICTOGGLE-"], redirect = False)
+						self.des_selection_window.window.un_hide()
+						self.window.close()
+
+					case "-CANCEL-":
+						self.des_selection_window.window.un_hide()
+						self.window.close()
+
 					case sg.WINDOW_CLOSED:
+						self.des_selection_window.window.un_hide()
 						break
 
 					case _:

@@ -1,3 +1,7 @@
+> Commit: Session creator functionality
+>
+> - The session creation menu can now create a new session
+
 > Commit: Window reference chains
 >
 > - The login/signup screen will be referenced by the DES selection screen
