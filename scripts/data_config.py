@@ -121,8 +121,8 @@ class DataConfig:
 	def get_settings(self):
 		"""Returns a collection of each key, its possible values and its current value"""
 		return {
-     					"x": {"options": self.headings, "selected": self.x_key},
-						"y": {"options": self.valid_y_keys, "selected": self.y_key},
+					"x": {"options": self.headings, "selected": self.x_key},
+					"y": {"options": self.valid_y_keys, "selected": self.y_key},
       				"series": {"options": self.headings, "selected": self.series_key},
           			"get": {"options": self.valid_series, "selected": self.get_series}
              	}

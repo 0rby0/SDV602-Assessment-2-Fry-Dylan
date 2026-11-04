@@ -1,3 +1,7 @@
+> Commit: DES config functionality
+>
+> - DES config panel now sets values for DES
+
 > Commit: Session creator functionality
 >
 > - The session creation menu can now create a new session
