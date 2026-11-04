@@ -1,3 +1,8 @@
+> Commit: Datasource manager functionality
+>
+> - Added function to return the filenames for a given dataset
+> - The datasource manager updates and displays any datasets
+
 > Commit: Chat window functionality
 >
 > - Chat window now displays the session chat and can send messages

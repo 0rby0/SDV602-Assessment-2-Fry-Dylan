@@ -1,13 +1,15 @@
 import FreeSimpleGUI as sg
 
 class DataSourceManager:
-	def __init__(self, app, des_window):
+	def __init__(self, app, des_window, session_id):
 		# Create the window
 		self.window = self.create_window()
 
 		# Create a permanent reference to the app and DES window
 		self.app = app
 		self.des_window = des_window
+
+		self.session_id = session_id
 
 		# Show the window
 		self.show()
@@ -37,14 +39,35 @@ class DataSourceManager:
   
 	def show(self):
 		while True:
-			event, values = self.window.read()
+			event, values = self.window.read(10)
+
+			self.window["-DATASETS-"].update(values = self.app.sm.sessions[self.session_id]._files.datasets)
+			self.window["-DATASETNAME-"].update(text = values["-DATASETS-"])
+			self.window["-DATASOURCES-"].update(values = self.app.sm.sessions[self.session_id]._files.get_data_sources(values["-DATASETS-"]))
 
 			match event:
-					case sg.WINDOW_CLOSED:
-						break
+				case "-ADDSOURCE-":
+					pass
 
-					case _:
-						break
+				case "-REMOVESOURCE":
+					pass
+
+				case "-APPENDSOURCE-":
+					pass
+
+				case "-REMOVEAPPENDED-":
+					pass
+
+				case "-SELECT-":
+					self.app.data_display.data_conf.update_dataset(self.app.sm[self.session_id].compile_dataset(values["-DATASETS-"]))
+					self.des_window.un_hide()
+					self.window.close()
+
+				case sg.WINDOW_CLOSED:
+					break
+
+				case _:
+					pass
 
 		self.close_window()
 

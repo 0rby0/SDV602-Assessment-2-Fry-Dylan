@@ -109,3 +109,17 @@ class FileManager:
 				self.internal_db.remove(datasource)
 
 		return "Datasource removed successfully"
+
+
+	def get_data_sources(self, dataset):
+		"""Return a list of the filenames under the given dataset."""
+		if dataset not in self.datasets:
+			return "Dataset not found"
+
+		filenames = []
+
+		for datasource in self.internal_db:
+			if datasource["dataset"] == dataset:
+				filenames.append(datasource["filename"])
+
+		return filenames
