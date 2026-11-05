@@ -90,6 +90,7 @@ class DataSourceManager:
 
 					# Show the DES screen and close this window
 					self.window.close()
+					self.des_window.window["-DATASETDETAILS-"].update(value = SessionManager().data_display.data_conf.data_name)
 					self.des_window.window.un_hide()
 					self.des_window.show()
 

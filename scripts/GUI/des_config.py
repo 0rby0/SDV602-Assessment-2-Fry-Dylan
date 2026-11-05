@@ -3,8 +3,9 @@ import FreeSimpleGUI as sg
 from session_manager import SessionManager
 
 class DESConfig:
-	def __init__(self, session_name):
+	def __init__(self, session_name, des_window):
 		self.session = SessionManager().get_session_by_name(session_name)
+		self.des_window = des_window
 
 		# Create the window
 		self.window = self.create_window()
@@ -13,7 +14,7 @@ class DESConfig:
    
    
 	def create_window(self):
-		initial_settings = self.session.data_display.data_conf.get_settings()
+		initial_settings = SessionManager().data_display.data_conf.get_settings()
 
 		layout = [
 							[ sg.Text("Type"), sg.Combo(values = ["Line", "Pie", "Bar"], default_value = "Line", key = "-TYPESELECT-") ],
@@ -31,7 +32,7 @@ class DESConfig:
 		while True:
 			event, values = self.window.read(10)
 
-			settings = self.session.data_display.data_conf.get_settings()
+			settings = SessionManager().data_display.data_conf.get_settings()
 
 			self.window["-YSELECT-"].update(values = settings["y"]["options"])
 			self.window["-XSELECT-"].update(values = settings["x"]["options"])
@@ -40,10 +41,13 @@ class DESConfig:
 
 			match event:
 				case "-SUBMIT-":
-					self.session.data_display.data_conf.change_setting("x", values["-XSELECT-"])
-					self.session.data_display.data_conf.change_setting("y", values["-YSELECT-"])
-					self.session.data_display.data_conf.change_setting("series", values["-LEGENDSELECT-"])
-					self.session.data_display.data_conf.change_setting("get", values["-SUBLEGENDSELECT-"])
+					SessionManager().data_display.data_conf.graph_type = values["-TYPESELECT-"]
+					SessionManager().data_display.data_conf.change_setting("x", values["-XSELECT-"])
+					SessionManager().data_display.data_conf.change_setting("y", values["-YSELECT-"])
+					SessionManager().data_display.data_conf.change_setting("series", values["-LEGENDSELECT-"])
+					SessionManager().data_display.data_conf.change_setting("get", values["-SUBLEGENDSELECT-"])
+					self.des_window.load_graph()
+					self.window.close()
 
 				case sg.WINDOW_CLOSED | "-CANCEL-":
 					break

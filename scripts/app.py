@@ -9,10 +9,11 @@ import argparse
 class App():
 	def __init__(self, REMOTE : bool, verbosity : int):
 		self.remote = REMOTE
-		self.sm = SessionManager()
+
+		sm = SessionManager()
 		
 		if not REMOTE:
-			self.sm.sessions.append(Session("Local Session", self.sm.user))
+			sm.sessions.append(Session("Local Session", sm.user))
 	
 		if verbosity >= 0:
 			HeadlessTest(self, verbosity = verbosity)

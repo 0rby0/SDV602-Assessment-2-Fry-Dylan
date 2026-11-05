@@ -9,6 +9,8 @@ class DataConfig:
 		self.data_name = ""
 		self.data = []
 
+		self.graph_type = "line"
+
 		self.headings = []
 
 		self.valid_y_keys = []

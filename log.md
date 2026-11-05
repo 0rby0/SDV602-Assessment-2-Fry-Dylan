@@ -1,3 +1,10 @@
+> Commit: DES window functionality
+>
+> - The DES window now create its own chat window
+> - My session manager singlton doesn't persist across multiprocessing processes, therefore I need to rework the whole frontend app structure for this to work
+> - Scalings cooked, can't figure out why or how to fix it. She'll be right
+> - Most of the stuff works. Graphs still don't display properly though.
+
 > Commit: Data source manager functionality
 > 
 > - The data source manager can display select and modify with the control buttons

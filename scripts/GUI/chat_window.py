@@ -4,7 +4,7 @@ from session_manager import SessionManager
 
 class ChatWindow:
 	def __init__(self, session_name):
-		self.session = SessionManager().get_session_by_name(session_name)
+		self.session_name = session_name
 
 		# Create the window
 		self.window = self.create_window()
@@ -12,7 +12,7 @@ class ChatWindow:
    
 	def create_window(self):
 		layout = [
-							[ sg.Text(self.session.session_name, size = (40, 1), justification = "center") ],
+							[ sg.Text(self.session_name, size = (40, 1), justification = "center") ],
 							[ sg.HorizontalSeparator() ],
 							[ sg.Multiline(size = (47, 25), disabled = True, key = "-CHATLOG-") ],
 							[ sg.Input(key = "-MESSAGEINPUT-"), sg.Button(">", key = "-SUBMIT-") ]
@@ -22,14 +22,18 @@ class ChatWindow:
    
    
 	def show(self):
+		session = SessionManager().get_session_by_name(self.session_name)
+
 		while True:
 			event, values = self.window.read(10)
 
-			self.window["-CHATLOG-"].update(self.session.get_messages())
+			if session: # TEMP CRASH FIX
+				self.window["-CHATLOG-"].update(session.get_messages())
 
 			match event:
 				case "-SUBMIT-":
-					self.session.send_message(SessionManager().user, values["-MESSAGEINPUT-"])
+					if session: # TEMP CRASH FIX
+						session.send_message(SessionManager().user, values["-MESSAGEINPUT-"])
 
 
 	def close_window(self):

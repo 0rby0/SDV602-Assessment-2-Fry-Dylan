@@ -7,24 +7,25 @@ from user import User
 
 
 class SessionManager:
-	instance = None
-	instantiated = False
+	_instance = None
 
 	def __new__(cls):
-		if cls.instance is None:
-			cls.instance = super().__new__(cls)
-		return cls.instance
+		if cls._instance is None:
+			cls._instance = super().__new__(cls)
+			cls._instance._initialised = False
+		return cls._instance
 
-	
+
 	def __init__(self):
-		if not self.instantiated:
-			self.sessions = []
-			self.user = User()
-			self.link = SessionUserManager()
-			self.db = DatabaseConnection()
-			self.data_display = DataDisplay()
+		if self._initialised: return
 
-			self.instantiated = True
+		self.sessions = []
+		self.user = User()
+		self.link = SessionUserManager()
+		self.db = DatabaseConnection()
+		self.data_display = DataDisplay()
+
+		self._initialised = True
 
 
 	def get_remote_session_names(self):
