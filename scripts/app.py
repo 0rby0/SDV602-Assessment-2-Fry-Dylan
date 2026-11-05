@@ -20,7 +20,7 @@ class App():
 			if REMOTE:
 				LogIn()
 			else:
-				DESWindow("Local Session")
+				DESWindow("Local Session").show()
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()

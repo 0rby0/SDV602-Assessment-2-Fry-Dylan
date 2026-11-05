@@ -1,3 +1,7 @@
+> Commit: Data source manager functionality
+> 
+> - The data source manager can display select and modify with the control buttons
+
 > Commit: Session referencing update - Part 2
 >
 > - Updated the references in all the GUI classes to point to the correct places

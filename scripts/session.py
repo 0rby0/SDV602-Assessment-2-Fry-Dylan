@@ -4,7 +4,7 @@ from database_connect import DatabaseConnection
 from chat import Chat
 
 class Session:
-	def __init__(self, name, user = None, public = True):
+	def __init__(self, name, user, public = True):
 		self.session_name = name
 		self.creator = user
 		self.public = public
@@ -14,7 +14,7 @@ class Session:
 		self.db = None
 		self._chat = None
   
-		if user is not None:
+		if user.username is not None:
 			self._chat = Chat()
 			self.db = DatabaseConnection()
 			self.db.pull_data(self)

@@ -111,6 +111,14 @@ class FileManager:
 		return "Datasource removed successfully"
 
 
+	def get_data_sets(self):
+		"""Return the list of all datasets"""
+		if len(self.datasets) <= 0:
+			return "No datasets"
+		
+		return self.datasets
+
+
 	def get_data_sources(self, dataset):
 		"""Return a list of the filenames under the given dataset."""
 		if dataset not in self.datasets:
@@ -122,4 +130,7 @@ class FileManager:
 			if datasource["dataset"] == dataset:
 				filenames.append(datasource["filename"])
 
-		return filenames
+		if filenames:
+			return filenames
+		else:
+			return "No Datasources"
