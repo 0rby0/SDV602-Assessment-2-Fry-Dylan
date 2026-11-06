@@ -42,7 +42,7 @@ class SessionManager:
 		for session in DatabaseConnection().get_all_sessions():
 			if session["session"] == session_name:
 				SessionUserManager().create_link(username = self.user.username, session = session_name)
-				self.sessions.append(Session(session_name, self.user.username))
+				self.sessions.append(Session(session_name, session["creator"]))
 				return f"Successfully joined session: '{session_name}'"
  
 		return "Session not found"
@@ -59,7 +59,7 @@ class SessionManager:
 					return self.join_session(session_name)
 				return "Session already exists"
  
-		self.sessions.append(Session(session_name, self.user, public = public))
+		self.sessions.append(Session(session_name, self.user.username, public = public))
 		SessionUserManager().create_link(username = self.user.username, session = session_name)
 		return f"Successfully joined session: '{session_name}'"
 

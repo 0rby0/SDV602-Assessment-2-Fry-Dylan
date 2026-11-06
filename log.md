@@ -1,3 +1,14 @@
+> Commit: Correct window closing
+>
+> - Because of the way the ui is structured, the close function won't work for recursively closing windows
+> - The windows will send the standard close button signal to all of their referenced windows, with the exception of the chat which will be directly closed
+> - We should be able to keep the function idea but modified to trigger differently
+> - Theres some printing happening that I can't find the source of
+> - Nevermind it's gone
+> - Changed the des window to only create a chat if it is remote
+> - Fixed the way that session owners are stored and handled
+> - For some reason the data manger window clears the chat when used and closes the des when data is submitted
+
 > Commit: Sub-window handling
 >
 > - Each sub-window will remember and follow its parent

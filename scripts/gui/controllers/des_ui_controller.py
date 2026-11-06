@@ -59,8 +59,10 @@ from gui.controllers.des_config_ui_controller import parse as parse_config
 def parse(session_manager, session_name):
 	window = sg.Window(title = "DES Analysis App", layout = layout)
 
-	chat_window = mp.Process(target = parse_chat, args = (session_manager, session_name,))
-	chat_window.start()
+	chat_window = None
+	if session_manager.get_session_by_name(session_name).creator is not None:
+		chat_window = mp.Process(target = parse_chat, args = (session_manager, session_name,))
+		chat_window.start()
 
 	while True:
 		event, values = window.read(30)
@@ -80,4 +82,10 @@ def parse(session_manager, session_name):
 				session_manager.leave_session(session_name)
 				break
 
+	close_tree(window = window, chat_window = chat_window)
+
+
+def close_tree(window, chat_window):
+	if chat_window:
+		chat_window.terminate()
 	window.close()

@@ -40,6 +40,15 @@ def parse(session_manager, login_window):
 			case sg.WINDOW_CLOSED:
 				break
 
+	close_tree(window = window, login_window = login_window, sub_windows = sub_windows)
+
+
+def close_tree(window, login_window, sub_windows):
+	login_window.write_event_value(sg.WIN_CLOSED, None)
+
+	for window in sub_windows:
+		window.terminate()
+
 	window.close()
 
 

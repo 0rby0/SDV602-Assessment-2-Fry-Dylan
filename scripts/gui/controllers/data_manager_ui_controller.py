@@ -17,7 +17,6 @@ def parse(session_manager, session_name, des_window):
 			selected_set = [0]
 			if len(values["-DATASETS-"]) > 0:
 				selected_set = values["-DATASETS-"]
-
 				
 			selected_source = [0]
 			if len(values["-DATASOURCES-"]) > 0:
@@ -53,15 +52,18 @@ def parse(session_manager, session_name, des_window):
 			case "-SELECT-":
 				# Don't try to exit if nothing is selected
 				if values["-DATASETS-"] == [] or session._files.get_data_sets() == "No datasets": return
-
 				# Update the DES screen to be using the selected dataset
 				session.display.data_conf.update_dataset(session.compile_dataset(session._files.datasets[values["-DATASETS-"][0]]))
-				
-
+				des_window.un_hide()
+				window.close()
+			
 			case sg.WINDOW_CLOSED:
+				close_tree(window = window, des_window = des_window)
 				break
 
-	des_window.un_hide()
+
+def close_tree(window, des_window):
+	des_window.write_event_value(sg.WIN_CLOSED, None)
 	window.close()
 
 
