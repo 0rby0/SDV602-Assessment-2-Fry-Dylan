@@ -1,11 +1,17 @@
 import FreeSimpleGUI as sg
+import multiprocessing as mp
 
 from gui.layouts.des_browser_ui_layout import layout
+from gui.controllers.session_creator_ui_controller import parse as parse_creator
+from gui.controllers.des_ui_controller import parse as parse_des
 
 
-def parse(session_manager):
+def parse(session_manager, login_window):
+	login_window.hide()
+
 	window = sg.Window(title = "Session Browser", layout = layout)
 	sessions = []
+	sub_windows = []
 
 	while True:
 		event, values = window.read(10)
@@ -15,17 +21,11 @@ def parse(session_manager):
 
 		match event:
 			case "-SIGNOUT-":
-				# Close this window
-				window.close()
-
-				# Redisplay the login window
-
-				# login_window.window.un_hide()
-				# login_window.show()
+				login_window.un_hide()
+				break
 
 			case "-CREATE-":
-				window.hide()
-				# SessionCreator(des_selection_window = self)
+				parse_creator(session_manager = session_manager, browser_window = window)
 
 			case "-DELETE-":
 				pass
@@ -33,12 +33,10 @@ def parse(session_manager):
 			case "-SELECT-":
 				session_manager.join_session(session_name = sessions[values["-SESSIONS-"][0]][0])
 
-				# des = DESWindow(session_name = sessions[values["-SESSIONS-"][0]][0])
-				# des_process = mp.Process(target = des.show)
-				# windows.append(des_process)
-				# des_process.start()
+				des_process = mp.Process(target = parse_des, args = (session_manager, sessions[values["-SESSIONS-"][0]][0],))
+				sub_windows.append(des_process)
+				des_process.start()
 
-	
 			case sg.WINDOW_CLOSED:
 				break
 

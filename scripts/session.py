@@ -14,22 +14,20 @@ class Session:
   
 		self._files = FileManager()
 		
-		self.db = None
 		self._chat = None
   
 		if user is not None:
 			self._chat = Chat()
-			self.db = DatabaseConnection()
-			self.db.pull_data(self)
-			self.db.push_data(self)
+			DatabaseConnection().pull_data(self)
+			DatabaseConnection().push_data(self)
    
    
 	def new_dataset(self, name):
 		"""Creates a new dataset entry and pushes it to the database - Currently doesn't save without adding data to the dataset."""
 		self._files.create_dataset(name)
 
-		if self.db:
-			self.db.push_data(self)
+		if self.creator:
+			DatabaseConnection().push_data(self)
 
 		return f"Dataset '{name}' successfully created"
    
@@ -39,8 +37,8 @@ class Session:
 		if self._files.load_data_source(file, dataset) != "File loaded successfully":
 			return "Failed to load file"
   
-		if self.db:
-			self.db.push_data(self)
+		if DatabaseConnection():
+			DatabaseConnection().push_data(self)
 
 		return f"Datasource '{file}' successfully added to '{dataset}'"
   
@@ -49,8 +47,8 @@ class Session:
 		"""Removes a dataset and all of its attached data from the internal and remote storage."""
 		self._files.remove_dataset(name)
   
-		if self.db:
-			self.db.push_data(self)
+		if DatabaseConnection():
+			DatabaseConnection().push_data(self)
 
 		return f"Dataset '{name}' successfully removed"
 
@@ -59,8 +57,8 @@ class Session:
 		"""Attempt to remove the data of the requested file (e.g. document.csv), which is linked to the given dataset, from the internal and external databases."""
 		self._files.remove_data_source(file, dataset)
   
-		if self.db:
-			self.db.push_data(self)
+		if DatabaseConnection():
+			DatabaseConnection().push_data(self)
 
 		return f"Datasource '{file}' successfully removed from '{dataset}'"
 
@@ -69,25 +67,25 @@ class Session:
 		"""Attempts to change all instances of the old name to the new name."""
 		self._files.rename_dataset(old_name, new_name)
   
-		if self.db:
-			self.db.push_data(self)
+		if DatabaseConnection():
+			DatabaseConnection().push_data(self)
   
 		return f"Dataset '{old_name}' successfully renamed to '{new_name}'"
 
 
 	def compile_dataset(self, dataset):
 		"""Updates the internal database to use the remote data and then gathers all of the data, from the internal database, whichs is linked to the given dataset and combines it into one array."""
-		if self.db:
-			self.db.pull_data(self)
+		if DatabaseConnection():
+			DatabaseConnection().pull_data(self)
    
 		return self._files.compile_dataset(dataset)
 
 
 	def send_message(self, sender, contents):
 		"""Sends a message to the remote database."""
-		if self._chat and self.db:
+		if self._chat and DatabaseConnection():
 			self._chat.send_message(sender, contents)
-			self.db.push_data(self)
+			DatabaseConnection().push_data(self)
 			return "Message sent"
 
 		return "Messages can only be sent in remote sessions"
@@ -95,8 +93,8 @@ class Session:
 
 	def get_messages(self):
 		"""Retrieves all of the messages for the current session and formats them."""
-		if self._chat and self.db:
-			self.db.pull_data(self)
+		if self._chat and DatabaseConnection():
+			DatabaseConnection().pull_data(self)
 			return self._chat.get_messages()
 
 		return "Messages can only be accessed in remote sessions"

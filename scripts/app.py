@@ -23,7 +23,7 @@ class App():
 			HeadlessTest(self, verbosity = verbosity)
 		else:
 			if REMOTE:
-				parse_login(self.sm.user)
+				parse_login(self.sm)
 			else:
 				parse_des(self.sm, "Local Session")
 

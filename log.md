@@ -1,3 +1,9 @@
+> Commit: Sub-window handling
+>
+> - Each sub-window will remember and follow its parent
+> - Now all menus should be reachable and have access to the necessary objects
+> - Next will be re-adding the closing function and fixing the graph display
+
 > Commit: GUI restructuring
 >
 > - The layouts and controllers for the GUI are seperated for cleaness

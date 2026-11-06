@@ -3,7 +3,9 @@ import FreeSimpleGUI as sg
 from gui.layouts.data_manager_ui_layout import layout
 
 
-def parse(session_manager, session_name):
+def parse(session_manager, session_name, des_window):
+	des_window.hide()
+
 	window = sg.Window(title = "Manage Data", layout = layout)
 
 	session = session_manager.get_session_by_name(session_name)
@@ -21,7 +23,7 @@ def parse(session_manager, session_name):
 			if len(values["-DATASOURCES-"]) > 0:
 				selected_source = values["-DATASOURCES-"]
 
-			update_display(window = window, session_manager = session_manager, session_name = session_name, selected_set = selected_set, selected_source = selected_source)
+			update_display(window = window, session_manager = session_manager, session_name = session_name, current_set_selection = selected_set, current_source_selection = selected_source)
 
 		match event:
 			case "-ADDSOURCE-":
@@ -53,12 +55,13 @@ def parse(session_manager, session_name):
 				if values["-DATASETS-"] == [] or session._files.get_data_sets() == "No datasets": return
 
 				# Update the DES screen to be using the selected dataset
-				session_manager.data_display.data_conf.update_dataset(session.compile_dataset(session._files.datasets[values["-DATASETS-"][0]]))
+				session.display.data_conf.update_dataset(session.compile_dataset(session._files.datasets[values["-DATASETS-"][0]]))
 				
 
 			case sg.WINDOW_CLOSED:
 				break
 
+	des_window.un_hide()
 	window.close()
 
 

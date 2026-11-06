@@ -1,6 +1,10 @@
 import FreeSimpleGUI as sg
+import multiprocessing as mp
 
 from gui.layouts.des_ui_layout import layout
+from gui.controllers.data_manager_ui_controller import parse as parse_manager
+from gui.controllers.chat_ui_controller import parse as parse_chat
+from gui.controllers.des_config_ui_controller import parse as parse_config
 
 # import matplotlib.pyplot as plt
 # from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -55,15 +59,18 @@ from gui.layouts.des_ui_layout import layout
 def parse(session_manager, session_name):
 	window = sg.Window(title = "DES Analysis App", layout = layout)
 
+	chat_window = mp.Process(target = parse_chat, args = (session_manager, session_name,))
+	chat_window.start()
+
 	while True:
 		event, values = window.read(30)
 
 		match event:
 			case "-MANAGE-":
-				pass
+				parse_manager(session_manager = session_manager, session_name = session_name, des_window = window)
 
 			case "-CONFIGURE-":
-				pass
+				parse_config(session_manager = session_manager, session_name = session_name, des_window = window)
 
 			case "-RELOADGRAPH-":
 				# load_graph(window = window, session = session)

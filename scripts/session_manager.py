@@ -59,7 +59,7 @@ class SessionManager:
 					return self.join_session(session_name)
 				return "Session already exists"
  
-		self.sessions.append(Session(session_name, self.user.username, public = public))
+		self.sessions.append(Session(session_name, self.user, public = public))
 		SessionUserManager().create_link(username = self.user.username, session = session_name)
 		return f"Successfully joined session: '{session_name}'"
 
