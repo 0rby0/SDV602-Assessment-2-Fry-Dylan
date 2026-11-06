@@ -1,37 +1,20 @@
 # Create, Delete, and load sessions
 from database_connect import DatabaseConnection
 from session_user_manager import SessionUserManager
-from data_displayer import DataDisplay
 from session import Session
 from user import User
 
 
 class SessionManager:
-	_instance = None
-
-	def __new__(cls):
-		if cls._instance is None:
-			cls._instance = super().__new__(cls)
-			cls._instance._initialised = False
-		return cls._instance
-
-
 	def __init__(self):
-		if self._initialised: return
-
 		self.sessions = []
 		self.user = User()
-		self.link = SessionUserManager()
-		self.db = DatabaseConnection()
-		self.data_display = DataDisplay()
-
-		self._initialised = True
 
 
 	def get_remote_session_names(self):
 		"""Retrieves and returns the names of all remote sessions being stored in the database."""
 		session_list = []
-		retrieved_sessions = self.db.get_all_sessions()
+		retrieved_sessions = DatabaseConnection().get_all_sessions()
   
 		for session in retrieved_sessions:
 			if session["public"] == True:
@@ -56,9 +39,9 @@ class SessionManager:
 
 	def join_session(self, session_name):
 		"""Try to find the given session in the database and join if it exists"""
-		for session in self.db.get_all_sessions():
+		for session in DatabaseConnection().get_all_sessions():
 			if session["session"] == session_name:
-				self.link.create_link(username = self.user.username, session = session_name)
+				SessionUserManager().create_link(username = self.user.username, session = session_name)
 				self.sessions.append(Session(session_name, self.user.username))
 				return f"Successfully joined session: '{session_name}'"
  
@@ -68,10 +51,8 @@ class SessionManager:
 	def create_session(self, session_name, public = True, redirect = False):
 		"""Creates a new session in the session list if one does not exist"""
 
-		print(self.user)
-		
 		# Check that a session doesn't already exist
-		for session in self.db.get_all_sessions():
+		for session in DatabaseConnection().get_all_sessions():
 			if session["session"] == session_name:
 				# If the session already exists, should you join it instead
 				if redirect:
@@ -79,7 +60,7 @@ class SessionManager:
 				return "Session already exists"
  
 		self.sessions.append(Session(session_name, self.user.username, public = public))
-		self.link.create_link(username = self.user.username, session = session_name)
+		SessionUserManager().create_link(username = self.user.username, session = session_name)
 		return f"Successfully joined session: '{session_name}'"
 
 
@@ -91,16 +72,16 @@ class SessionManager:
 		if not user:
 			return "Invalid user"
 
-		for session in self.db.get_all_sessions():
+		for session in DatabaseConnection().get_all_sessions():
 			if session["session"] == session_name:
       
 				if session["creator"] != user.username:
 					return "User is not creator of session"
 
-				if self.link.find_link_by_session(session_name):
+				if SessionUserManager().find_link_by_session(session_name):
 					return "Cannot delete session, session in use"
 
-				self.db.wipe_data(session)
+				DatabaseConnection().wipe_data(session)
 				return f"Session '{session["session"]}' removed from database"
  
 		return "Session not in database"
@@ -115,10 +96,15 @@ class SessionManager:
 			if session_name == session.session_name:
 				# Delete the current index from the main list if the names match
 				self.sessions.remove(self.sessions[session_index])
-				if self.link.break_link(username = self.user.username, session_name = session_name):
-					return "Successfully left session"
+
+				if self.user.username:
+					if SessionUserManager().break_link(username = self.user.username, session_name = session_name):
+						return "Successfully left session"
+					else:
+						return "Failed to leave session"
 				else:
-					return "Failed to leave session"
+					return "Successfully left session"
+				
 			else:
 				# Increase the index if the names don't match
 				session_index += 1

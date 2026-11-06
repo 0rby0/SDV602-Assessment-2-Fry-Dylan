@@ -1,3 +1,14 @@
+> Commit: GUI restructuring
+>
+> - The layouts and controllers for the GUI are seperated for cleaness
+> - Opening windows will occur in the new guihandler class based on the events/data in the backend
+> - Windows no longer use classes
+> - The database connections are no longer beinbg stored and are now going to be accessed as singletons (for performance)
+> - Session manager is no longer a singleton
+> - Dropped the GUI handler, each window will just handle its children and siblings itself and the session manager will get passed through each menu
+> - Moved the data display to the session where it should be
+> - Local headless tests are completely broken right now, I will figure that out later
+
 > Commit: DES window functionality
 >
 > - The DES window now create its own chat window

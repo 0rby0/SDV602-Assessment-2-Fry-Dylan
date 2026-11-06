@@ -17,7 +17,7 @@ class HeadlessTest:
 
 		# Display Connected Modules ---- DEPRECATED
 		# if verbosity >= 3:
-		# 	print(f"\nPresent :---:\n\n\tData Display: {app.sm.data_display is not None}\n\tUser: {app.sm.user is not None}\n\tSession: {app.session is not None}\n\tSession Manager: {app.sm is not None}\n\nTests   :---:")
+		# 	print(f"\nPresent :---:\n\n\tData Display: {app.sm.display is not None}\n\tUser: {app.sm.user is not None}\n\tSession: {app.session is not None}\n\tSession Manager: {app.sm is not None}\n\nTests   :---:")
 
 		# Remote mode tests
 		if app.remote:
@@ -202,7 +202,7 @@ class HeadlessTest:
 
 			results.append(Test (test_name = "Update the data display data",
 			                    				function_description = "DataConfig.update_dataset",
-													test_function = app.sm.data_display.data_conf.update_dataset(app.sm.get_session_by_name("Test Session 1").compile_dataset("Test Dataset")),
+													test_function = app.sm.get_session_by_name("Test Session 1").display.data_conf.update_dataset(app.sm.get_session_by_name("Test Session 1").compile_dataset("Test Dataset")),
 													expected_result = None,
 													print_verbose = (verbosity >= 3)))
 
@@ -213,7 +213,7 @@ class HeadlessTest:
 
 			results.append(Test (test_name = "Change graph x axis",
                         							function_description = "DataConfig.change_setting",
-                               					test_function = app.sm.data_display.data_conf.change_setting("x", "key"),
+                               					test_function = app.sm.get_session_by_name("Test Session 1").display.data_conf.change_setting("x", "key"),
                                     			expected_result = "X key changed to key",
                                        		print_verbose = (verbosity >= 3)))
 
@@ -224,7 +224,7 @@ class HeadlessTest:
 
 			results.append(Test (test_name = "Change graph y axis",
                         							function_description = "DataConfig.change_setting",
-                               					test_function = app.sm.data_display.data_conf.change_setting("y", "value"),
+                               					test_function = app.sm.get_session_by_name("Test Session 1").display.data_conf.change_setting("y", "value"),
                                     			expected_result = "Y key changed to value",
                                        		print_verbose = (verbosity >= 3)))
 
@@ -235,7 +235,7 @@ class HeadlessTest:
 
 			results.append(Test (test_name = "Change graph series key",
                         							function_description = "DataConfig.change_setting",
-                               					test_function = app.sm.data_display.data_conf.change_setting("series", "diff"),
+                               					test_function = app.sm.get_session_by_name("Test Session 1").display.data_conf.change_setting("series", "diff"),
                                     			expected_result = "Series key changed to diff",
                                        		print_verbose = (verbosity >= 3)))
 
@@ -246,7 +246,7 @@ class HeadlessTest:
 
 			results.append(Test (test_name = "Get data config settings",
                         							function_description = "DataConfig.get_settings",
-                               					test_function = app.sm.data_display.data_conf.get_settings(),
+                               					test_function = app.sm.get_session_by_name("Test Session 1").display.data_conf.get_settings(),
                                     			expected_result = {
 																										"x": {"options": ["key", "diff", "value"], "selected": "key"},
 																										"y": {"options": ["value"], "selected": "value"},
@@ -262,7 +262,7 @@ class HeadlessTest:
 
 			results.append(Test (test_name = "Generate a line graph from the test dataset",
 											function_description = "DataDisplay.generate_chart_line",
-											test_function = app.sm.data_display.generate_chart_line(),
+											test_function = app.sm.get_session_by_name("Test Session 1").display.generate_chart_line(),
 											expected_result = None,
 											print_verbose = (verbosity >= 3)))
 
@@ -273,7 +273,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Generate a bar graph from the test dataset",
 													function_description = "DataDisplay.generate_chart_bar",
-											test_function = app.sm.data_display.generate_chart_bar(),
+											test_function = app.sm.get_session_by_name("Test Session 1").display.generate_chart_bar(),
 											expected_result = None,
 											print_verbose = (verbosity >= 3)))
 
@@ -284,7 +284,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Generate a pie chart from the test dataset",
 													function_description = "DataDisplay.generate_chart_pie",
-											test_function = app.sm.data_display.generate_chart_pie(),
+											test_function = app.sm.get_session_by_name("Test Session 1").display.generate_chart_pie(),
 											expected_result = None,
 											print_verbose = (verbosity >= 3)))
 
@@ -615,7 +615,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Create a new dataset",
 															function_description = "Session.new_dataset",
-															test_function = app.sm.sessions[0].new_dataset("Test Dataset"),
+															test_function = app.sm.get_session_by_name("Local Session").new_dataset("Test Dataset"),
 															expected_result = "Dataset 'Test Dataset' successfully created",
 															print_verbose = (verbosity >= 3)))
 
@@ -626,7 +626,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Add the first test datasource to the dataset",
 															function_description = "Session.add_datasource",
-															test_function = app.sm.sessions[0].add_datasource("test_data/test_data_a.csv", "Test Dataset"),
+															test_function = app.sm.get_session_by_name("Local Session").add_datasource("test_data/test_data_a.csv", "Test Dataset"),
 															expected_result = "Datasource 'test_data/test_data_a.csv' successfully added to 'Test Dataset'",
 															print_verbose = (verbosity >= 3)))
 
@@ -637,7 +637,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Compile with the single datasource",
 															function_description = "Session.compile_dataset",
-															test_function = app.sm.sessions[0].compile_dataset("Test Dataset"),
+															test_function = app.sm.get_session_by_name("Local Session").compile_dataset("Test Dataset"),
 															expected_result = {'test_data_a.csv': [
 																																			{'key': 'a', 'diff': 'apple', 'value': '1'}, 
 																																			{'key': 'a', 'diff': 'banana', 'value': '2'}, 
@@ -655,7 +655,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Add the second test datasource to the dataset",
 															function_description = "Session.add_datasource",
-															test_function = app.sm.sessions[0].add_datasource("test_data/test_data_b.csv", "Test Dataset"),
+															test_function = app.sm.get_session_by_name("Local Session").add_datasource("test_data/test_data_b.csv", "Test Dataset"),
 															expected_result = "Datasource 'test_data/test_data_b.csv' successfully added to 'Test Dataset'",
 															print_verbose = (verbosity >= 3)))
 
@@ -666,7 +666,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Compile with both datasources",
 															function_description = "Session.compile_dataset",
-															test_function = app.sm.sessions[0].compile_dataset("Test Dataset"),
+															test_function = app.sm.get_session_by_name("Local Session").compile_dataset("Test Dataset"),
 															expected_result = {'test_data_a.csv + 1 other(s)': [
 																																										{'key': 'a', 'diff': 'apple', 'value': '1'}, 
 																																										{'key': 'a', 'diff': 'banana', 'value': '2'}, 
@@ -690,7 +690,7 @@ class HeadlessTest:
 
 			results.append(Test (test_name = "Update the data display data",
 			                    				function_description = "DataConfig.update_dataset",
-													test_function = app.sm.data_display.data_conf.update_dataset(app.sm.sessions[0].compile_dataset("Test Dataset")),
+													test_function = app.sm.get_session_by_name("Local Session").display.data_conf.update_dataset(app.sm.get_session_by_name("Local Session").compile_dataset("Test Dataset")),
 													expected_result = None,
 													print_verbose = (verbosity >= 3)))
 
@@ -701,7 +701,7 @@ class HeadlessTest:
 
 			results.append(Test (test_name = "Change graph x axis",
                         							function_description = "DataConfig.change_setting",
-                               					test_function = app.sm.data_display.data_conf.change_setting("x", "key"),
+                               					test_function = app.sm.get_session_by_name("Local Session").display.data_conf.change_setting("x", "key"),
                                     			expected_result = "X key changed to key",
                                        		print_verbose = (verbosity >= 3)))
 
@@ -712,7 +712,7 @@ class HeadlessTest:
 
 			results.append(Test (test_name = "Change graph y axis",
                         							function_description = "DataConfig.change_setting",
-                               					test_function = app.sm.data_display.data_conf.change_setting("y", "value"),
+                               					test_function = app.sm.get_session_by_name("Local Session").display.data_conf.change_setting("y", "value"),
                                     			expected_result = "Y key changed to value",
                                        		print_verbose = (verbosity >= 3)))
 
@@ -723,7 +723,7 @@ class HeadlessTest:
 
 			results.append(Test (test_name = "Change graph series key",
                         							function_description = "DataConfig.change_setting",
-                               					test_function = app.sm.data_display.data_conf.change_setting("series", "diff"),
+                               					test_function = app.sm.get_session_by_name("Local Session").display.data_conf.change_setting("series", "diff"),
                                     			expected_result = "Series key changed to diff",
                                        		print_verbose = (verbosity >= 3)))
 
@@ -734,7 +734,7 @@ class HeadlessTest:
 
 			results.append(Test (test_name = "Get data config settings",
 															function_description = "DataConfig.get_settings",
-															test_function = app.sm.data_display.data_conf.get_settings(),
+															test_function = app.sm.get_session_by_name("Local Session").display.data_conf.get_settings(),
 															expected_result = {
 																										"x": {"options": ["key", "diff", "value"], "selected": "key"},
 																										"y": {"options": ["value"], "selected": "value"},
@@ -750,7 +750,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Generate a line graph from the test dataset",
 															function_description = "DataDisplay.generate_chart_line",
-															test_function = app.sm.data_display.generate_chart_line(),
+															test_function = app.sm.get_session_by_name("Local Session").display.generate_chart_line(),
 															expected_result = None,
 															print_verbose = (verbosity >= 3)))
 
@@ -761,7 +761,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Generate a bar graph from the test dataset",
 															function_description = "DataDisplay.generate_chart_bar",
-															test_function = app.sm.data_display.generate_chart_bar(),
+															test_function = app.sm.get_session_by_name("Local Session").display.generate_chart_bar(),
 															expected_result = None,
 															print_verbose = (verbosity >= 3)))
 
@@ -772,7 +772,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Generate a pie chart from the test dataset",
 															function_description = "DataDisplay.generate_chart_pie",
-															test_function = app.sm.data_display.generate_chart_pie(),
+															test_function = app.sm.get_session_by_name("Local Session").display.generate_chart_pie(),
 															expected_result = None,
 															print_verbose = (verbosity >= 3)))
 
@@ -783,7 +783,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Remove the second datasource from the test dataset",
 															function_description = "Session.remove_datasource",
-															test_function = app.sm.sessions[0].remove_datasource("test_data_b.csv", "Test Dataset"),
+															test_function = app.sm.get_session_by_name("Local Session").remove_datasource("test_data_b.csv", "Test Dataset"),
 															expected_result = "Datasource 'test_data_b.csv' successfully removed from 'Test Dataset'",
 															print_verbose = (verbosity >= 3)))
 
@@ -794,7 +794,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Compile the test dataset without the second datasource",
 													function_description = "Session.compile_dataset",
-											test_function = app.sm.sessions[0].compile_dataset("Test Dataset"),
+											test_function = app.sm.get_session_by_name("Local Session").compile_dataset("Test Dataset"),
 											expected_result = {'test_data_a.csv': [
 																									{'key': 'a', 'diff': 'apple', 'value': '1'}, 
 																									{'key': 'a', 'diff': 'banana', 'value': '2'}, 
@@ -812,7 +812,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Rename the test dataset",
 													function_description = "Session.rename_dataset",
-											test_function = app.sm.sessions[0].rename_dataset("Test Dataset", "New Name"),
+											test_function = app.sm.get_session_by_name("Local Session").rename_dataset("Test Dataset", "New Name"),
 											expected_result = "Dataset 'Test Dataset' successfully renamed to 'New Name'",
 											print_verbose = (verbosity >= 3)))
 
@@ -823,7 +823,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Fail to compile the old dataset name",
 													function_description = "Session.compile_dataset",
-											test_function = app.sm.sessions[0].compile_dataset("Test Dataset"),
+											test_function = app.sm.get_session_by_name("Local Session").compile_dataset("Test Dataset"),
 											expected_result = "Invalid dataset: 'Test Dataset'",
 											print_verbose = (verbosity >= 3)))
 
@@ -834,7 +834,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Compile the new dataset name",
 													function_description = "Session.compile_dataset",
-											test_function = app.sm.sessions[0].compile_dataset("New Name"),
+											test_function = app.sm.get_session_by_name("Local Session").compile_dataset("New Name"),
 											expected_result = {'test_data_a.csv': [
 																									{'key': 'a', 'diff': 'apple', 'value': '1'}, 
 																									{'key': 'a', 'diff': 'banana', 'value': '2'}, 
@@ -852,7 +852,7 @@ class HeadlessTest:
 
 			results.append(Test ( test_name = "Completely remove the test dataset",
 													function_description = "Session.remove_dataset",
-											test_function = app.sm.sessions[0].remove_dataset("New Name"),
+											test_function = app.sm.get_session_by_name("Local Session").remove_dataset("New Name"),
 											expected_result = "Dataset 'New Name' successfully removed",
 											print_verbose = (verbosity >= 3)))
 

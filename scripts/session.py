@@ -1,20 +1,23 @@
 # A session being hosted with its own chat, data and users.
 from file_manager import FileManager
 from database_connect import DatabaseConnection
+from data_displayer import DataDisplay
 from chat import Chat
 
 class Session:
-	def __init__(self, name, user, public = True):
+	def __init__(self, name, user = None, public = True):
 		self.session_name = name
 		self.creator = user
 		self.public = public
+
+		self.display = DataDisplay()
   
 		self._files = FileManager()
 		
 		self.db = None
 		self._chat = None
   
-		if user.username is not None:
+		if user is not None:
 			self._chat = Chat()
 			self.db = DatabaseConnection()
 			self.db.pull_data(self)

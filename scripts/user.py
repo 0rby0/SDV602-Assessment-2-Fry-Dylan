@@ -5,7 +5,6 @@ from user_manager import UserManager
 class User:
 	def __init__(self):
 		self.username = None
-		self.db = UserManager()
 
 
 	def get_hash(self, password):
@@ -20,18 +19,18 @@ class User:
 
 	def register_user(self, username, password):
 		"""Creates a new user in the remote database and sets the user object to them."""
-		existing_user_check = self.db.find_user(username)
+		existing_user_check = UserManager().find_user(username)
   
 		if existing_user_check:
 			return "User already exists"
 
 		self.username = username
-		return self.db.create_user(username, self.get_hash(password))
+		return UserManager().create_user(username, self.get_hash(password))
 
 
 	def log_in_user(self, username, password):
 		"""Finds the given username in the database, checks if the password hashes match and then sets the user object to it."""
-		found_user = self.db.find_user(username)
+		found_user = UserManager().find_user(username)
 
 		if not found_user:
 			return "Login Failed"
@@ -51,7 +50,7 @@ class User:
   
 	def delete_user(self):
 		"""Removes the user from the database and signs them out"""
-		if self.db.wipe_user(self.username) == "User removed from database":
+		if UserManager().wipe_user(self.username) == "User removed from database":
 			self.username = None
 			return "User deleted successfully"
 		else:

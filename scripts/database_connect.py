@@ -48,7 +48,7 @@ class DatabaseConnection:
 		if not session.creator:
 			return "Cannot push, no session creator"
   
-		formatted_data = { "session": session.session_name, "creator": session.creator, "datasets": session._files.internal_db, "chat":  messages, "public": session.public}
+		formatted_data = { "session": session.session_name, "creator": session.creator.username, "datasets": session._files.internal_db, "chat":  messages, "public": session.public}
 
 		return self.get_collection(db_config.SESSION_COLLECTION).find_one_and_replace({"session": session.session_name}, formatted_data, upsert=True)
 
