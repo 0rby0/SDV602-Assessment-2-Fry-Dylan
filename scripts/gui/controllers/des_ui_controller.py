@@ -7,10 +7,10 @@ from gui.controllers.chat_ui_controller import parse as parse_chat
 from gui.controllers.des_config_ui_controller import parse as parse_config
 
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
 
-def draw_figure(canvas, figure):
+def draw_figure(canvas, figure, toolbar_canvas):
 	if not hasattr(draw_figure, 'canvas_packed'):
 		draw_figure.canvas_packed = {}
 
@@ -21,6 +21,11 @@ def draw_figure(canvas, figure):
 	if widget not in draw_figure.canvas_packed:
 		draw_figure.canvas_packed[widget] = figure
 		widget.pack(side = "top", fill = "both", expand = 1)
+
+	toolbar_canvas_agg = toolbar_canvas.TKCanvas
+	toolbar = NavigationToolbar2Tk(figure_canvas_agg, toolbar_canvas_agg)
+	toolbar.update()
+	figure_canvas_agg.get_tk_widget().pack(side = "top", fill = "both", expand = 1)
 
 	return figure_canvas_agg
 
@@ -56,7 +61,7 @@ def load_graph(window, session):
 		ax.set_axis_off()
 
 	if fig:
-		draw_figure(window["-GRAPHDISPLAY-"].TKCanvas, fig)
+		draw_figure(window["-GRAPHDISPLAY-"].TKCanvas, fig, window["-GRAPHCONTROLS-"])
 
 
 def parse(session_manager, session_name):

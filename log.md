@@ -1,3 +1,16 @@
+> Things left to do
+> - Clear graphs on reload
+> - Fix issue with graphs not displaying without config
+> - Try to fix DPI scaling
+> - Make sure all headless tests pass
+> - Implement delete session button
+> - Fix crash when reopening windows e.g. config
+
+> Commit: Graph controls
+>
+> - The graph display now has the MatPlotLib toolbar
+> - Created a list of things that need to be done before the project will be "complete"
+
 > Commit: Graph displaying
 >
 > - Fixed the issue where the data display would crash from always invalid data
