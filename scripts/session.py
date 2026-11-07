@@ -16,7 +16,7 @@ class Session:
 		
 		self._chat = None
   
-		if user is not None:
+		if self.creator is not None:
 			self._chat = Chat()
 			DatabaseConnection().pull_data(self)
 			DatabaseConnection().push_data(self)
@@ -37,7 +37,7 @@ class Session:
 		if self._files.load_data_source(file, dataset) != "File loaded successfully":
 			return "Failed to load file"
   
-		if DatabaseConnection():
+		if self.creator is not None:
 			DatabaseConnection().push_data(self)
 
 		return f"Datasource '{file}' successfully added to '{dataset}'"
@@ -47,7 +47,7 @@ class Session:
 		"""Removes a dataset and all of its attached data from the internal and remote storage."""
 		self._files.remove_dataset(name)
   
-		if DatabaseConnection():
+		if self.creator is not None:
 			DatabaseConnection().push_data(self)
 
 		return f"Dataset '{name}' successfully removed"
@@ -57,7 +57,7 @@ class Session:
 		"""Attempt to remove the data of the requested file (e.g. document.csv), which is linked to the given dataset, from the internal and external databases."""
 		self._files.remove_data_source(file, dataset)
   
-		if DatabaseConnection():
+		if self.creator is not None:
 			DatabaseConnection().push_data(self)
 
 		return f"Datasource '{file}' successfully removed from '{dataset}'"
@@ -67,7 +67,7 @@ class Session:
 		"""Attempts to change all instances of the old name to the new name."""
 		self._files.rename_dataset(old_name, new_name)
   
-		if DatabaseConnection():
+		if self.creator is not None:
 			DatabaseConnection().push_data(self)
   
 		return f"Dataset '{old_name}' successfully renamed to '{new_name}'"
@@ -75,7 +75,7 @@ class Session:
 
 	def compile_dataset(self, dataset):
 		"""Updates the internal database to use the remote data and then gathers all of the data, from the internal database, whichs is linked to the given dataset and combines it into one array."""
-		if DatabaseConnection():
+		if self.creator is not None:
 			DatabaseConnection().pull_data(self)
    
 		return self._files.compile_dataset(dataset)

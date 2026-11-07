@@ -6,5 +6,5 @@ layout = [
 					[ sg.Text("X Key"), sg.Combo(values = [[]], key = "-XSELECT-") ],
 					[ sg.Text("Legend"), sg.Combo(values = [[]], key = "-LEGENDSELECT-") ],
 					[ sg.Text("Legend Series"), sg.Combo(values = [[]], key = "-SUBLEGENDSELECT-") ],
-					[ sg.Button(button_text = "Cancel", key = "-CANCEL-"), sg.Button(button_text = "Submit", key = "-SUBMIT-") ]
+					[ sg.Button(button_text = "Submit", key = "-SUBMIT-") ]
 				]

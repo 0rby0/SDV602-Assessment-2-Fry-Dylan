@@ -20,7 +20,7 @@ class DataDisplay:
 			for row in self.data_conf.data:
 					series.setdefault(row.get(self.data_conf.series_key), []).append(row)
 
-			fig, ax = plt.subplots(figsize=(8, 6))
+			plt.figure(figsize=(8, 6))
 
 			for name, rows in series.items():
 					rows.sort(key=itemgetter(self.data_conf.x_key))
@@ -32,14 +32,16 @@ class DataDisplay:
 						x_values.append(row[self.data_conf.x_key])
 						y_values.append(float(row[self.data_conf.y_key]))
 
-					ax.plot(x_values, y_values, marker='o', label=name)
+					plt.plot(x_values, y_values, marker='o', label=name)
 
 			if self.data_conf.series_key:
-				ax.legend()
+				plt.legend()
 
-			ax.xlabel(self.data_conf.x_key)
-			ax.ylabel(self.data_conf.y_key)
-			ax.title(self.data_conf.data_name)
+			plt.xlabel(self.data_conf.x_key)
+			plt.ylabel(self.data_conf.y_key)
+			plt.title(self.data_conf.data_name)
+
+			fig = plt.gcf()
 
 			return fig  
 

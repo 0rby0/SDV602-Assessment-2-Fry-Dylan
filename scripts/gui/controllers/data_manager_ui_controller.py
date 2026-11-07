@@ -4,8 +4,6 @@ from gui.layouts.data_manager_ui_layout import layout
 
 
 def parse(session_manager, session_name, des_window):
-	des_window.hide()
-
 	window = sg.Window(title = "Manage Data", layout = layout)
 
 	session = session_manager.get_session_by_name(session_name)
@@ -54,12 +52,13 @@ def parse(session_manager, session_name, des_window):
 				if values["-DATASETS-"] == [] or session._files.get_data_sets() == "No datasets": return
 				# Update the DES screen to be using the selected dataset
 				session.display.data_conf.update_dataset(session.compile_dataset(session._files.datasets[values["-DATASETS-"][0]]))
-				des_window.un_hide()
-				window.close()
+				break
 			
 			case sg.WINDOW_CLOSED:
 				close_tree(window = window, des_window = des_window)
 				break
+
+	window.close()
 
 
 def close_tree(window, des_window):

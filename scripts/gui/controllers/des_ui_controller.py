@@ -6,58 +6,63 @@ from gui.controllers.data_manager_ui_controller import parse as parse_manager
 from gui.controllers.chat_ui_controller import parse as parse_chat
 from gui.controllers.des_config_ui_controller import parse as parse_config
 
-# import matplotlib.pyplot as plt
-# from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
-# def draw_figure(canvas, figure):
-# 	if hasattr(self, "canvas_agg") and canvas_agg is not None:
-# 		old_fig = canvas_agg.figure
-# 		canvas_agg.get_tk_widget().forget()
-# 		plt.close(old_fig)
+def draw_figure(canvas, figure):
+	if not hasattr(draw_figure, 'canvas_packed'):
+		draw_figure.canvas_packed = {}
 
-# 	# Get the canvas
-# 	tk_canvas = canvas.TKCanvas
+	figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
+	figure_canvas_agg.draw()
 
-# 	# Clear the canvas
-# 	for widget in tk_canvas.winfo_children():
-# 		widget.destroy()
+	widget = figure_canvas_agg.get_tk_widget()
+	if widget not in draw_figure.canvas_packed:
+		draw_figure.canvas_packed[widget] = figure
+		widget.pack(side = "top", fill = "both", expand = 1)
 
-# 	figure_canvas_agg = FigureCanvasTkAgg(figure, tk_canvas)
-# 	figure_canvas_agg.draw()
-# 	figure_canvas_agg.get_tk_widget().pack(side = "top", fill = "both", expand = 1)
-	
-# 	return figure_canvas_agg
+	return figure_canvas_agg
 
 
-# def load_graph(window, session):
-# 	data_display = session.data_display
+def delete_figure_agg(figure_agg):
+	figure_agg.get_tk_widget().forget()
 
-# 	fig, ax = plt.subplots(figsize=(8, 6))
-# 	if data_display.data_conf.data:
-# 		match data_display.data_conf.graph_type:
-# 			case "line":
-# 				fig = data_display.generate_chart_line()
+	draw_figure.canvas_packed.pop(figure_agg.get_tk_widget())
 
-# 			case "bar":
-# 				fig = data_display.generate_chart_bar()
+	plt.close("all")
 
-# 			case "pie":
-# 				fig = data_display.generate_chart_pie()
 
-# 			case _:
-# 				fig = None
+def load_graph(window, session):
+	data_display = session.display
 
-# 	else:
-# 		ax.text(0.5, 0.5, "No Dataset Loaded", horizontalalignment="center", verticalalignment = "center", fontsize = 12)
-# 		ax.set_axis_off()
+	fig, ax = plt.subplots(figsize=(8, 6))
+	if data_display.data_conf.data:
+		match data_display.data_conf.graph_type:
+			case "Line":
+				fig = data_display.generate_chart_line()
 
-# 	if fig:
-# 		draw_figure(window["-GRAPHDISPLAY-"], fig)
+			case "Bar":
+				fig = data_display.generate_chart_bar()
+
+			case "Pie":
+				fig = data_display.generate_chart_pie()
+
+			case _:
+				fig = None
+
+	else:
+		ax.text(0.5, 0.5, "No Dataset Loaded", horizontalalignment="center", verticalalignment = "center", fontsize = 12)
+		ax.set_axis_off()
+
+	if fig:
+		draw_figure(window["-GRAPHDISPLAY-"].TKCanvas, fig)
 
 
 def parse(session_manager, session_name):
-	window = sg.Window(title = "DES Analysis App", layout = layout)
+	window = sg.Window(title = "DES Analysis App", layout = layout, finalize = True)
+
+	refresh_graph = load_graph
 
 	chat_window = None
 	if session_manager.get_session_by_name(session_name).creator is not None:
@@ -69,14 +74,15 @@ def parse(session_manager, session_name):
 
 		match event:
 			case "-MANAGE-":
+				window.hide()
 				parse_manager(session_manager = session_manager, session_name = session_name, des_window = window)
+				window.un_hide()
 
 			case "-CONFIGURE-":
 				parse_config(session_manager = session_manager, session_name = session_name, des_window = window)
 
 			case "-RELOADGRAPH-":
-				# load_graph(window = window, session = session)
-				pass
+				refresh_graph(window = window, session = session_manager.get_session_by_name(session_name))
 
 			case sg.WINDOW_CLOSED:
 				session_manager.leave_session(session_name)

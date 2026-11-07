@@ -1,3 +1,10 @@
+> Commit: Graph displaying
+>
+> - Fixed the issue where the data display would crash from always invalid data
+> - The graph display code has been updated slightly
+> - Fixed the issue with the data manager closing the app on submit
+> - You can no longer close or cancel the config window for simplicity, it also now correctly holds selected values
+
 > Commit: Correct window closing
 >
 > - Because of the way the ui is structured, the close function won't work for recursively closing windows
