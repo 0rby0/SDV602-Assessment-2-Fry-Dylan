@@ -9,7 +9,7 @@ class DataConfig:
 		self.data_name = ""
 		self.data = []
 
-		self.graph_type = "line"
+		self.graph_type = "Line"
 
 		self.headings = []
 

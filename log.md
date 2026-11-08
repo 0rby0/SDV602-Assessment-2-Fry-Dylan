@@ -1,8 +1,11 @@
 > Things left to do
 >
-> - Fix issue with graphs not displaying without config
 > - Fix crash when reopening windows e.g. config
 > - Give user graph scaling option in des window
+
+> Commit: Fixing graph config display issue
+>
+> - This one was just that the default graph type string was "line" instead of "Line"
 
 > Commit: Correcting headless tests
 >
