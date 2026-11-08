@@ -1,8 +1,16 @@
 > Things left to do
 >
 > - Fix issue with graphs not displaying without config
-> - Make sure all headless tests pass
 > - Fix crash when reopening windows e.g. config
+> - Give user graph scaling option in des window
+
+> Commit: Correcting headless tests
+>
+> - The db config is now a singleton class which can be switched to use a debug database collection
+> - The test check now uses a cascading try except block to get a result
+> - That last change was unnecessary but I'll leave it since its probably safer
+> - All tests now pass
+> - The graph scaling/dpi is cooked on smaller screens, technically i can leave it but I'll try to fix that
 
 > Commit: Session delete button
 >

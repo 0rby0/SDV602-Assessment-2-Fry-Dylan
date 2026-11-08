@@ -28,7 +28,7 @@ class App():
 		self.sm = SessionManager()
 		
 		if not REMOTE:
-			self.sm.sessions.append(Session("Local Session", self.sm.user))
+			self.sm.sessions.append(Session("Local Session"))
 	
 		if verbosity >= 0:
 			HeadlessTest(self, verbosity = verbosity)

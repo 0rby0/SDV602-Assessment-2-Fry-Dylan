@@ -4,7 +4,6 @@ from session_user_manager import SessionUserManager
 from session import Session
 from user import User
 
-
 class SessionManager:
 	def __init__(self):
 		self.sessions = []

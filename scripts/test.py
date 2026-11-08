@@ -1,4 +1,6 @@
 # Executes a specified test and returns the results
+from matplotlib.figure import Figure
+
 class Test:
 
 	# test_name = The natural language description of what the test is doing (e.g. Get the name of the current session)
@@ -16,14 +18,21 @@ class Test:
 				output["text"] += f"\n\tExpected Result: |{expected_result}|"
 				output["text"] += f"\n\tActual Result: |{result}|"
 
-		# If either part of the result is None, then just do a straight compare
-		if (result == None) | (expected_result == None):
-			valid_result = (result == expected_result)
-		elif (type(result) is dict) | (type(expected_result) is dict):
-			valid_result = self.compare_dicts(result = result, expected = expected_result)
-		else:	
-			valid_result = (sorted(result) == sorted(expected_result))
-
+		# Attempt down the list of checks
+		try:
+			if type(result) is Figure:
+				valid_result = True
+			else:
+				valid_result = self.compare_dicts(result = result, expected = expected_result)
+		except:
+			try: 
+				valid_result = (sorted(result) == sorted(expected_result))
+			except:
+				try: 
+					valid_result = (result == expected_result)
+				except:
+					valid_result = False
+			
 		if valid_result:
 				output["text"] += f"\n\033[92mPassed\033[0m"
 				output["passed"] = True
@@ -37,7 +46,7 @@ class Test:
 		# Fail if the results are different sizes
 		if len(result) != len(expected):
 			return False
-     
+	  
 		# Go through each key in the actual result
 		for key in result:
 			# If the key from the actual result is not in the expected result

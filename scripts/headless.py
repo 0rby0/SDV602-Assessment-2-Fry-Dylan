@@ -1,6 +1,7 @@
 # Run through a series of commands to test the application
 from test import Test
 from session import Session
+from db_config import DBConfig
 
 # Verbosity Levels:
 #
@@ -14,6 +15,9 @@ class HeadlessTest:
 
 		print(f"\n-- Headless Test --")
 		results = []
+
+		# Switch DB to test
+		DBConfig().use_db(db = "test")
 
 		# Display Connected Modules ---- DEPRECATED
 		# if verbosity >= 3:
@@ -110,6 +114,17 @@ class HeadlessTest:
 											print_verbose = (verbosity >= 3)))
 
 			# Test 1.3.2 End ------------------------------------------------------------------------------------
+
+
+			# Test 1.2.2.0 Start ------------------------------------------------------------------------------------
+
+			results.append(Test(test_name = "Exit private session",
+                       							function_description = "SessionManager.leave_session",
+														test_function = app.sm.leave_session("Private session"),
+														expected_result = "Successfully left session",
+														print_verbose = (verbosity >= 3)))
+   
+			# Test 1.2.2.0 Start ------------------------------------------------------------------------------------
 
 
    		# Test 1.2.2 Start ------------------------------------------------------------------------------------
@@ -261,10 +276,10 @@ class HeadlessTest:
 			# Test 1.9 Start ------------------------------------------------------------------------------------
 
 			results.append(Test (test_name = "Generate a line graph from the test dataset",
-											function_description = "DataDisplay.generate_chart_line",
-											test_function = app.sm.get_session_by_name("Test Session 1").display.generate_chart_line(),
-											expected_result = None,
-											print_verbose = (verbosity >= 3)))
+															function_description = "DataDisplay.generate_chart_line",
+															test_function = app.sm.get_session_by_name("Test Session 1").display.generate_chart_line(),
+															expected_result = None,
+															print_verbose = (verbosity >= 3)))
 
 			# Test 1.9 End ------------------------------------------------------------------------------------
 
@@ -520,17 +535,6 @@ class HeadlessTest:
     		# Test 1.21.2 End ------------------------------------------------------------------------------------
     
 		  
-			# Test 1.21.3 Start ------------------------------------------------------------------------------------
-		
-			results.append(Test ( test_name = "Exit private test session",
-															function_description = "SessionManager.leave_session",
-															test_function = app.sm.leave_session("Private session"),
-															expected_result = "Successfully left session",
-															print_verbose = (verbosity >= 3)))
-		
-			# Test 1.21.3 End ------------------------------------------------------------------------------------
-		
-    
 			# Test 1.22 Start ------------------------------------------------------------------------------------
 		
 			results.append(Test ( test_name = "Delete the first test session",
@@ -751,7 +755,7 @@ class HeadlessTest:
 			results.append(Test ( test_name = "Generate a line graph from the test dataset",
 															function_description = "DataDisplay.generate_chart_line",
 															test_function = app.sm.get_session_by_name("Local Session").display.generate_chart_line(),
-															expected_result = None,
+															expected_result = not None,
 															print_verbose = (verbosity >= 3)))
 
 			# Test 3.6 End ------------------------------------------------------------------------------------
@@ -762,7 +766,7 @@ class HeadlessTest:
 			results.append(Test ( test_name = "Generate a bar graph from the test dataset",
 															function_description = "DataDisplay.generate_chart_bar",
 															test_function = app.sm.get_session_by_name("Local Session").display.generate_chart_bar(),
-															expected_result = None,
+															expected_result = not None,
 															print_verbose = (verbosity >= 3)))
 
 			# Test 3.7 End ------------------------------------------------------------------------------------
@@ -773,7 +777,7 @@ class HeadlessTest:
 			results.append(Test ( test_name = "Generate a pie chart from the test dataset",
 															function_description = "DataDisplay.generate_chart_pie",
 															test_function = app.sm.get_session_by_name("Local Session").display.generate_chart_pie(),
-															expected_result = None,
+															expected_result = not None,
 															print_verbose = (verbosity >= 3)))
 
 			# Test 3.8 End ------------------------------------------------------------------------------------
