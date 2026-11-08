@@ -25,10 +25,33 @@ def parse(session_manager, login_window):
 				break
 
 			case "-CREATE-":
-				parse_creator(session_manager = session_manager, browser_window = window)
+				window.hide()
+				new_session = parse_creator(session_manager = session_manager, browser_window = window)
+				window.un_hide()
+    
+				if "Success" in new_session:
+					idx1 = new_session.find("'")
+					idx2 = new_session.find("'", idx1 + 1)
+					session_name = new_session[idx1 + 1:idx2]
+       
+					des_process = mp.Process(target = parse_des, args = (session_manager, session_name,))
+					sub_windows.append(des_process)
+					des_process.start()
 
 			case "-DELETE-":
-				pass
+				confirmation_window = sg.Window("Delete Session", disable_close = True, layout = [[sg.Text("Are you sure you want to delete this session?")], [sg.Button("No", key = "-NO-"), sg.Button("Yes", key = "-YES-")]])
+	
+				selected_session = sessions[values["-SESSIONS-"][0]][0]
+    
+				while True:
+					events, values = confirmation_window.read()
+					if events == "-YES-":
+						print(selected_session)
+						print(session_manager.remove_session(session_name = selected_session, user = session_manager.user))
+						break
+					else:
+						break
+				confirmation_window.close()
 
 			case "-SELECT-":
 				session_manager.join_session(session_name = sessions[values["-SESSIONS-"][0]][0])
@@ -36,11 +59,12 @@ def parse(session_manager, login_window):
 				des_process = mp.Process(target = parse_des, args = (session_manager, sessions[values["-SESSIONS-"][0]][0],))
 				sub_windows.append(des_process)
 				des_process.start()
-
+				
 			case sg.WINDOW_CLOSED:
+				close_tree(window = window, login_window = login_window, sub_windows = sub_windows)
 				break
 
-	close_tree(window = window, login_window = login_window, sub_windows = sub_windows)
+	window.close()
 
 
 def close_tree(window, login_window, sub_windows):
@@ -48,8 +72,6 @@ def close_tree(window, login_window, sub_windows):
 
 	for window in sub_windows:
 		window.terminate()
-
-	window.close()
 
 
 def update_display(window, session_manager, search_input, current_selection):

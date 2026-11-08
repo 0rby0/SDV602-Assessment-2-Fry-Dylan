@@ -1,8 +1,13 @@
 > Things left to do
+>
 > - Fix issue with graphs not displaying without config
 > - Make sure all headless tests pass
-> - Implement delete session button
 > - Fix crash when reopening windows e.g. config
+
+> Commit: Session delete button
+>
+> - Fixed a bug where some windows, such as the session creation window, would exit the application unintentionally
+> - Added the functionality to the delete session button on the des browser
 
 > Commit: DPI and graph clearing
 >
@@ -57,7 +62,7 @@
 > - Most of the stuff works. Graphs still don't display properly though.
 
 > Commit: Data source manager functionality
-> 
+>
 > - The data source manager can display select and modify with the control buttons
 
 > Commit: Session referencing update - Part 2

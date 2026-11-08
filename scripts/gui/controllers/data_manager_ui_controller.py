@@ -2,7 +2,6 @@ import FreeSimpleGUI as sg
 
 from gui.layouts.data_manager_ui_layout import layout
 
-
 def parse(session_manager, session_name, des_window):
 	window = sg.Window(title = "Manage Data", layout = layout)
 
@@ -11,12 +10,12 @@ def parse(session_manager, session_name, des_window):
 	while True:
 		event, values = window.read(10)
 
+		selected_set = [0]
+		selected_source = [0]
 		if values:
-			selected_set = [0]
 			if len(values["-DATASETS-"]) > 0:
 				selected_set = values["-DATASETS-"]
 				
-			selected_source = [0]
 			if len(values["-DATASOURCES-"]) > 0:
 				selected_source = values["-DATASOURCES-"]
 
