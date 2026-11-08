@@ -9,9 +9,20 @@ from gui.controllers.des_ui_controller import parse as parse_des
 
 import argparse
 
+import ctypes
+import os
 
 class App():
 	def __init__(self, REMOTE : bool, verbosity : int):
+		if os.name == "nt":
+			try:
+				ctypes.windll.shcore.SetProcessDpiAwareness(2)
+			except Exception:
+				try:
+					ctypes.windll.user32.SetProcessDPIAware()
+				except Exception:
+					pass
+
 		self.remote = REMOTE
 
 		self.sm = SessionManager()

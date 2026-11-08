@@ -9,49 +9,57 @@ from gui.controllers.des_config_ui_controller import parse as parse_config
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
+def draw_figure(window, graph_canvas, toolbar_canvas, figure):
+	if not hasattr(draw_figure, 'current_canvas_agg'):
+		draw_figure.current_canvas_agg = None
 
-def draw_figure(canvas, figure, toolbar_canvas):
-	if not hasattr(draw_figure, 'canvas_packed'):
-		draw_figure.canvas_packed = {}
+	# Clear the canvas
+	if draw_figure.current_canvas_agg:
+		old_widget = draw_figure.current_canvas_agg.get_tk_widget()
+		old_widget.forget()
+		old_widget.destroy()
+		draw_figure.current_canvas_agg = None
 
-	figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
+	# Clear the toolbar
+	toolbar_tk_canvas = toolbar_canvas.TKCanvas
+	for child in toolbar_tk_canvas.winfo_children():
+		child.destroy()
+
+	figure_canvas_agg = FigureCanvasTkAgg(figure, graph_canvas)
 	figure_canvas_agg.draw()
 
 	widget = figure_canvas_agg.get_tk_widget()
-	if widget not in draw_figure.canvas_packed:
-		draw_figure.canvas_packed[widget] = figure
-		widget.pack(side = "top", fill = "both", expand = 1)
+	widget.pack(side = "top", fill = "both", expand = 1)
 
 	toolbar_canvas_agg = toolbar_canvas.TKCanvas
 	toolbar = NavigationToolbar2Tk(figure_canvas_agg, toolbar_canvas_agg)
 	toolbar.update()
+
+	draw_figure.current_canvas_agg = figure_canvas_agg
+
 	figure_canvas_agg.get_tk_widget().pack(side = "top", fill = "both", expand = 1)
 
 	return figure_canvas_agg
 
 
-def delete_figure_agg(figure_agg):
-	figure_agg.get_tk_widget().forget()
-
-	draw_figure.canvas_packed.pop(figure_agg.get_tk_widget())
-
-	plt.close("all")
-
-
 def load_graph(window, session):
 	data_display = session.display
 
-	fig, ax = plt.subplots(figsize=(8, 6))
+	tk_root = window.TKroot
+	sys_dpi = tk_root.winfo_fpixels("1i") / 2
+
+	fig, ax = plt.subplots(figsize=(8, 6), dpi = sys_dpi)
+
 	if data_display.data_conf.data:
 		match data_display.data_conf.graph_type:
 			case "Line":
-				fig = data_display.generate_chart_line()
+				fig = data_display.generate_chart_line(sys_dpi)
 
 			case "Bar":
-				fig = data_display.generate_chart_bar()
+				fig = data_display.generate_chart_bar(sys_dpi)
 
 			case "Pie":
-				fig = data_display.generate_chart_pie()
+				fig = data_display.generate_chart_pie(sys_dpi)
 
 			case _:
 				fig = None
@@ -61,7 +69,7 @@ def load_graph(window, session):
 		ax.set_axis_off()
 
 	if fig:
-		draw_figure(window["-GRAPHDISPLAY-"].TKCanvas, fig, window["-GRAPHCONTROLS-"])
+		draw_figure(window, window["-GRAPHDISPLAY-"].TKCanvas, window["-GRAPHCONTROLS-"], fig)
 
 
 def parse(session_manager, session_name):

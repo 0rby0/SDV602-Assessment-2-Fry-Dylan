@@ -1,10 +1,13 @@
 > Things left to do
-> - Clear graphs on reload
 > - Fix issue with graphs not displaying without config
-> - Try to fix DPI scaling
 > - Make sure all headless tests pass
 > - Implement delete session button
 > - Fix crash when reopening windows e.g. config
+
+> Commit: DPI and graph clearing
+>
+> - The graph and toolbar now clear when the reload button is clicked
+> - I seem to have fixed the dpi scaling glitches now, I also adjusted all of the graphs to use consistent display methods
 
 > Commit: Graph controls
 >

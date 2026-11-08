@@ -9,8 +9,10 @@ from data_config import DataConfig
 class DataDisplay:
 	def __init__(self):
 		self.data_conf = DataConfig(None)
+		self.base_width = 400
+		self.base_height = 300
 
-	def generate_chart_line(self):
+	def generate_chart_line(self, dpi = 100):
 		"""Creates a line chart from the given settings."""
 		try:
 			if not self.data_conf.data:
@@ -20,7 +22,9 @@ class DataDisplay:
 			for row in self.data_conf.data:
 					series.setdefault(row.get(self.data_conf.series_key), []).append(row)
 
-			plt.figure(figsize=(8, 6))
+			fig_width = self.base_width / dpi
+			fig_height = self.base_height / dpi
+			plt.figure(figsize=(fig_width, fig_height), dpi = dpi)
 
 			for name, rows in series.items():
 					rows.sort(key=itemgetter(self.data_conf.x_key))
@@ -49,7 +53,7 @@ class DataDisplay:
 			return None
 
 
-	def generate_chart_pie(self):
+	def generate_chart_pie(self, dpi = 100):
 		"""Creates a pie chart from the given settings."""
 		try:
 			if not self.data_conf.data:
@@ -58,21 +62,26 @@ class DataDisplay:
 			values = [] # y_key
 			labels = [] # x_key
 
-			fig, ax = plt.subplots(figsize=(8, 6))
+			fig_width = self.base_width / dpi
+			fig_height = self.base_height / dpi
+			plt.figure(figsize=(fig_width, fig_height), dpi = dpi)
 
 			for row in self.data_conf.data:
 				if row[self.data_conf.series_key] == self.data_conf.get_series:
 					values.append(int(row[self.data_conf.y_key]))
 					labels.append(row[self.data_conf.x_key])
 
-			ax.pie(values, labels=labels, autopct='%1.0f%%')
+			plt.pie(values, labels=labels, autopct='%1.0f%%')
+
+			fig = plt.gcf()
+
 			return fig
 
 		except:
 			return None
 
 
-	def generate_chart_bar(self):
+	def generate_chart_bar(self, dpi = 100):
 		"""Creates a bar chart from the given settings."""
 		try:
 			if not self.data_conf.data:
@@ -81,7 +90,9 @@ class DataDisplay:
 			x = []
 			y = {}
 
-			fig, ax = plt.subplots(figsize=(8, 6))
+			fig_width = self.base_width / dpi
+			fig_height = self.base_height / dpi
+			plt.figure(figsize=(fig_width, fig_height), dpi = dpi)
 
 			for row in self.data_conf.data:
 				if row[self.data_conf.x_key] not in x:
@@ -92,8 +103,11 @@ class DataDisplay:
 				else:
 					y[row[self.data_conf.series_key]] = [int(row[self.data_conf.y_key])]
 
-			ax.grouped_bar(y, tick_labels=x)
-			ax.legend()
+			plt.grouped_bar(y, tick_labels=x)
+			plt.legend()
+
+			fig = plt.gcf()
+
 			return fig
    
 		except:
