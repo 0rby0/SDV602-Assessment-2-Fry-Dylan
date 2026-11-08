@@ -1,9 +1,10 @@
 import FreeSimpleGUI as sg
 
-from gui.layouts.data_manager_ui_layout import layout
+from gui.layouts.data_manager_ui_layout import DataManagerUILayout
 
 def parse(session_manager, session_name, des_window):
-	window = sg.Window(title = "Manage Data", layout = layout)
+	layout = DataManagerUILayout()
+	window = sg.Window(title = "Manage Data", layout = layout.layout)
 
 	session = session_manager.get_session_by_name(session_name)
 
@@ -54,15 +55,15 @@ def parse(session_manager, session_name, des_window):
 				break
 			
 			case sg.WINDOW_CLOSED:
-				close_tree(window = window, des_window = des_window)
+				close_tree(des_window = des_window)
 				break
 
 	window.close()
+	layout.terminate()
 
 
-def close_tree(window, des_window):
+def close_tree(des_window):
 	des_window.write_event_value(sg.WIN_CLOSED, None)
-	window.close()
 
 
 def update_display(window, session_manager, session_name, current_set_selection, current_source_selection):

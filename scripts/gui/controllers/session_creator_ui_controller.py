@@ -1,10 +1,11 @@
 import FreeSimpleGUI as sg
 
-from gui.layouts.session_creator_ui_layout import layout
+from gui.layouts.session_creator_ui_layout import SessionCreatorUILayout
 
 
 def parse(session_manager, browser_window):
-	window = sg.Window(title = "Session Creator", layout = layout)
+	layout = SessionCreatorUILayout()
+	window = sg.Window(title = "Session Creator", layout = layout.layout)
 
 	result = None
 
@@ -20,6 +21,7 @@ def parse(session_manager, browser_window):
 					close_tree(window = window, browser_window = browser_window)
 
 	window.close()
+	layout.terminate()
 	return result
 
 

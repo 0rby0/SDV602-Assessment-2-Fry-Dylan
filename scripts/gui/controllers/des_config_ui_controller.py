@@ -1,11 +1,13 @@
 import FreeSimpleGUI as sg
 
-from gui.layouts.des_config_ui_layout import layout
+from gui.layouts.des_config_ui_layout import DESConfigUILayout
 
 
 def parse(session_manager, session_name, des_window):
+	layout = DESConfigUILayout()
+   
 	des_window.disable()
-	window = sg.Window(title = "Configure", layout = layout, disable_close = True)
+	window = sg.Window(title = "Configure", layout = layout.layout, disable_close = True)
 
 	initial_values = session_manager.get_session_by_name(session_name).display.data_conf.get_settings()
 
@@ -52,3 +54,4 @@ def parse(session_manager, session_name, des_window):
 
 	des_window.enable()
 	window.close()
+	layout.terminate()

@@ -1,15 +1,16 @@
 import FreeSimpleGUI as sg
 import multiprocessing as mp
 
-from gui.layouts.des_ui_layout import layout
+from gui.layouts.des_ui_layout import DESUILayout
 from gui.controllers.data_manager_ui_controller import parse as parse_manager
 from gui.controllers.chat_ui_controller import parse as parse_chat
 from gui.controllers.des_config_ui_controller import parse as parse_config
 
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends._backend_tk import NavigationToolbar2Tk
 
-def draw_figure(window, graph_canvas, toolbar_canvas, figure):
+def draw_figure(graph_canvas, toolbar_canvas, figure):
 	if not hasattr(draw_figure, 'current_canvas_agg'):
 		draw_figure.current_canvas_agg = None
 
@@ -69,11 +70,12 @@ def load_graph(window, session):
 		ax.set_axis_off()
 
 	if fig:
-		draw_figure(window, window["-GRAPHDISPLAY-"].TKCanvas, window["-GRAPHCONTROLS-"], fig)
+		draw_figure(window["-GRAPHDISPLAY-"].TKCanvas, window["-GRAPHCONTROLS-"], fig)
 
 
 def parse(session_manager, session_name):
-	window = sg.Window(title = "DES Analysis App", layout = layout, finalize = True)
+	layout = DESUILayout()
+	window = sg.Window(title = "DES Analysis App", layout = layout.layout, finalize = True)
 
 	refresh_graph = load_graph
 
@@ -102,6 +104,7 @@ def parse(session_manager, session_name):
 				break
 
 	close_tree(window = window, chat_window = chat_window)
+	layout.terminate()
 
 
 def close_tree(window, chat_window):

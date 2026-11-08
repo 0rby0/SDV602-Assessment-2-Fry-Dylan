@@ -1,7 +1,7 @@
 import FreeSimpleGUI as sg
 import multiprocessing as mp
 
-from gui.layouts.des_browser_ui_layout import layout
+from gui.layouts.des_browser_ui_layout import DESBrowserUILayout
 from gui.controllers.session_creator_ui_controller import parse as parse_creator
 from gui.controllers.des_ui_controller import parse as parse_des
 
@@ -9,7 +9,9 @@ from gui.controllers.des_ui_controller import parse as parse_des
 def parse(session_manager, login_window):
 	login_window.hide()
 
-	window = sg.Window(title = "Session Browser", layout = layout)
+	layout = DESBrowserUILayout()
+
+	window = sg.Window(title = "Session Browser", layout = layout.layout)
 	sessions = []
 	sub_windows = []
 
@@ -65,6 +67,7 @@ def parse(session_manager, login_window):
 				break
 
 	window.close()
+	layout.terminate()
 
 
 def close_tree(window, login_window, sub_windows):

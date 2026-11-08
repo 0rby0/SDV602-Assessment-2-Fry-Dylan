@@ -1,7 +1,14 @@
 > Things left to do
 >
-> - Fix crash when reopening windows e.g. config
 > - Give user graph scaling option in des window
+> - Setting persistence for all menus
+
+> Commit: UI reopening crash fix
+>
+> - The layouts are now a class again
+> - Each class has a terminate function as well which sets the classes layout to None for safety
+> - Multiple windows can now be opened, with the caveat that some settings are persistent but that is only a minor issue
+> - With this the app is technically completed
 
 > Commit: Fixing graph config display issue
 >

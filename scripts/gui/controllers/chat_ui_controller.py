@@ -1,10 +1,11 @@
 import FreeSimpleGUI as sg
 
-from gui.layouts.chat_ui_layout import layout
+from gui.layouts.chat_ui_layout import ChatUILayout
 
 
 def parse(session_manager, session_name):
-	window = sg.Window(title = "Session Chat", layout = layout, disable_close = True)
+	layout = ChatUILayout()
+	window = sg.Window(title = "Session Chat", layout = layout.layout, disable_close = True)
 
 	session = session_manager.get_session_by_name(session_name)
 

@@ -1,11 +1,13 @@
 import FreeSimpleGUI as sg
 
-from gui.layouts.login_ui_layout import layout
+from gui.layouts.login_ui_layout import LoginUILayout
 from gui.controllers.des_browser_ui_controller import parse as parse_browser
 
 
 def parse(session_manager):
-	window = sg.Window(title = "DES Analysis App", layout = layout)
+	layout = LoginUILayout()
+   
+	window = sg.Window(title = "DES Analysis App", layout = layout.layout)
 	showing_login_screen = True
 
 	while True:
@@ -33,6 +35,7 @@ def parse(session_manager):
 				break
 
 	window.close()
+	layout.terminate()
 
 
 def update_window(window, showing_login):
