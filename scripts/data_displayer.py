@@ -24,7 +24,8 @@ class DataDisplay:
 
 			fig_width = self.base_width / dpi
 			fig_height = self.base_height / dpi
-			plt.figure(figsize=(fig_width, fig_height), dpi = dpi)
+
+			fig, ax = plt.subplots(figsize=(fig_width, fig_height), dpi = dpi)
 
 			for name, rows in series.items():
 					rows.sort(key=itemgetter(self.data_conf.x_key))
@@ -36,16 +37,14 @@ class DataDisplay:
 						x_values.append(row[self.data_conf.x_key])
 						y_values.append(float(row[self.data_conf.y_key]))
 
-					plt.plot(x_values, y_values, marker='o', label=name)
+					ax.plot(x_values, y_values, marker='o', label=name)
 
 			if self.data_conf.series_key:
-				plt.legend()
+				ax.legend()
 
-			plt.xlabel(self.data_conf.x_key)
-			plt.ylabel(self.data_conf.y_key)
-			plt.title(self.data_conf.data_name)
-
-			fig = plt.gcf()
+			ax.set_xlabel(self.data_conf.x_key)
+			ax.set_ylabel(self.data_conf.y_key)
+			ax.set_title(self.data_conf.data_name)
 
 			return fig  
 

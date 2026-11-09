@@ -17,7 +17,7 @@ def draw_figure(graph_canvas, toolbar_canvas, figure):
 	# Clear the canvas
 	if draw_figure.current_canvas_agg:
 		old_widget = draw_figure.current_canvas_agg.get_tk_widget()
-		old_widget.forget()
+		old_widget.pack_forget()
 		old_widget.destroy()
 		draw_figure.current_canvas_agg = None
 
@@ -26,11 +26,15 @@ def draw_figure(graph_canvas, toolbar_canvas, figure):
 	for child in toolbar_tk_canvas.winfo_children():
 		child.destroy()
 
+	plt.close("all")
+
+	graph_canvas.pack_propagate(False)
+
 	figure_canvas_agg = FigureCanvasTkAgg(figure, graph_canvas)
 	figure_canvas_agg.draw()
 
 	widget = figure_canvas_agg.get_tk_widget()
-	widget.pack(side = "top", fill = "both", expand = 1)
+	widget.pack(side = "top", fill = "both", expand = True)
 
 	toolbar_canvas_agg = toolbar_canvas.TKCanvas
 	toolbar = NavigationToolbar2Tk(figure_canvas_agg, toolbar_canvas_agg)
@@ -38,18 +42,17 @@ def draw_figure(graph_canvas, toolbar_canvas, figure):
 
 	draw_figure.current_canvas_agg = figure_canvas_agg
 
-	figure_canvas_agg.get_tk_widget().pack(side = "top", fill = "both", expand = 1)
-
 	return figure_canvas_agg
 
 
-def load_graph(window, session):
+def load_graph(window, session, scale):
 	data_display = session.display
 
 	tk_root = window.TKroot
-	sys_dpi = tk_root.winfo_fpixels("1i") / 2
+	sys_dpi = tk_root.winfo_fpixels("1i") * (scale / 100)
 
-	fig, ax = plt.subplots(figsize=(8, 6), dpi = sys_dpi)
+	fig = None
+	ax = None
 
 	if data_display.data_conf.data:
 		match data_display.data_conf.graph_type:
@@ -66,6 +69,7 @@ def load_graph(window, session):
 				fig = None
 
 	else:
+		fig, ax = plt.subplots(figsize = (4, 3), dpi = sys_dpi)
 		ax.text(0.5, 0.5, "No Dataset Loaded", horizontalalignment="center", verticalalignment = "center", fontsize = 12)
 		ax.set_axis_off()
 
@@ -97,7 +101,7 @@ def parse(session_manager, session_name):
 				parse_config(session_manager = session_manager, session_name = session_name, des_window = window)
 
 			case "-RELOADGRAPH-":
-				refresh_graph(window = window, session = session_manager.get_session_by_name(session_name))
+				refresh_graph(window = window, session = session_manager.get_session_by_name(session_name), scale = values["-SCALE-"])
 
 			case sg.WINDOW_CLOSED:
 				session_manager.leave_session(session_name)

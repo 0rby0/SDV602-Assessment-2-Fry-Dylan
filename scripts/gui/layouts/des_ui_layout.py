@@ -3,8 +3,8 @@ import FreeSimpleGUI as sg
 class DESUILayout:
 	def __init__(self):
 		self.layout_column_1 = [
-											[ sg.Canvas(size = (600, 400), expand_x = True, expand_y = True, key = "-GRAPHDISPLAY-"), sg.Button(button_text = "Reload", key = "-RELOADGRAPH-") ],
-											[ sg.Canvas(size = (600, 50), expand_x = True, expand_y = True, key = "-GRAPHCONTROLS-") ]
+											[ sg.Canvas(size = (800, 600), expand_x = True, expand_y = True, key = "-GRAPHDISPLAY-"), sg.Button(button_text = "Reload", key = "-RELOADGRAPH-") ],
+											[ sg.Canvas(size = (800, 150), expand_x = True, expand_y = True, key = "-GRAPHCONTROLS-"), sg.Slider(range = (10, 100), default_value = 10, orientation = "vertical", key = "-SCALE-") ]
 									]
 
 		self.layout_column_2 = [

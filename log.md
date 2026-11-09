@@ -1,7 +1,8 @@
-> Things left to do
->
-> - Give user graph scaling option in des window
-> - Setting persistence for all menus
+> Commit: Final adjustments
+> 
+> - Added scale slider on des screen
+> - Fixed issue with window scale constantly expanding
+> - I have decided against parsistence in the config menu since it is not necessarily a problem
 
 > Commit: UI reopening crash fix
 >
