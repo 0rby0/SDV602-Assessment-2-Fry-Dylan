@@ -1,3 +1,12 @@
+### Reflection
+The final application is mostly the same as was planned. The largest difference being that most of the UI does not follow the exact layout of the wireframes because FreeSimpleGUI is difficult to work with and I prioritised getting the functionailty over the appearance. There is also the addition of the reload and scale controls on the des window to which were added for easier and better control over the graphs.
+
+Most of the major challenges faced in this development were related to the front-end and FreeSimpleGUI.
+
+In the future, I would plot out a class diagram before I begin coding. A lot of the time when developing the application both front and back end, classes would be calling down a line and unnecessarily returning values at lower levels. If I had planned out how each object would interact, this would have been less of an issue. Other than that, the development process went well.
+
+<hr>
+
 > Commit: Final adjustments
 > 
 > - Added scale slider on des screen
